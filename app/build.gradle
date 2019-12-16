@@ -53,8 +53,7 @@ sonarqube {
         property "sonar.projectBaseDir", "$projectDir/.."
         property "sonar.sources", "app/src/main/java," +
                 "coroutineskit/src/main/java," +
-                "rxjavakit/src/main/java," +
-                "asynctaskkit/src/main/java"
+                "rxjavakit/src/main/java,"
         property "sonar.coverage.exclusions", "**/*"
     }
 }
