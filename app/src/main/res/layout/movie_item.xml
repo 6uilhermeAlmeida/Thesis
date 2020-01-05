@@ -6,14 +6,17 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="4dp"
     android:layout_marginEnd="4dp"
-    app:cardCornerRadius="4dp"
+    android:clickable="true"
     app:cardElevation="2dp"
     app:cardPreventCornerOverlap="true"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground"
+    app:cardCornerRadius="8dp"
     app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp">
+        android:layout_height="wrap_content">
 
 
         <ImageView
@@ -26,19 +29,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@android:color/holo_red_dark" />
+            tools:srcCompat="@android:color/black" />
 
         <ImageView
             android:id="@+id/imageView_shade"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:alpha="0.8"
+            android:alpha="0.9"
             android:contentDescription="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@color/colorAccent" />
+            app:srcCompat="@android:color/black" />
 
         <TextView
             android:id="@+id/textView_title"
@@ -53,15 +56,15 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cardView2"
-            app:layout_constraintTop_toTopOf="@+id/cardView2"
+            app:layout_constraintStart_toEndOf="@+id/cardView"
+            app:layout_constraintTop_toTopOf="@+id/cardView"
             tools:text="Interstellar" />
 
         <TextView
             android:id="@+id/textView_genres"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/raleway"
             android:textAlignment="textStart"
             android:textColor="@android:color/white"
@@ -73,43 +76,43 @@
 
         <TextView
             android:id="@+id/textView_runtime"
-            android:layout_width="0dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             android:drawableStart="@drawable/ic_watch_later_black_24dp"
             android:drawablePadding="4dp"
             android:textColor="@android:color/white"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView_popularity"
-            app:layout_constraintStart_toEndOf="@+id/textView_popularity"
-            app:layout_constraintTop_toTopOf="@+id/textView_popularity"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_genres"
+            app:layout_constraintVertical_bias="1.0"
             tools:text="123M" />
 
         <TextView
             android:id="@+id/textView_popularity"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="8dp"
             android:drawableStart="@drawable/ic_stars_black_24dp"
             android:drawablePadding="4dp"
             android:gravity="center"
             android:textColor="@android:color/white"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView_backdrop"
-            app:layout_constraintStart_toStartOf="@+id/textView_title"
-            app:layout_constraintTop_toBottomOf="@+id/textView_genres"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_runtime"
+            app:layout_constraintEnd_toStartOf="@+id/textView_runtime"
+            app:layout_constraintTop_toTopOf="@+id/textView_runtime"
             tools:text="7.4" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView2"
+            android:id="@+id/cardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            app:cardCornerRadius="4dp"
+            app:cardCornerRadius="8dp"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="true"
             app:layout_constraintBottom_toBottomOf="parent"

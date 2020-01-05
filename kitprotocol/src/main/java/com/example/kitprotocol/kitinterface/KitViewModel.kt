@@ -4,8 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.kitprotocol.model.Movie
-import com.example.kitprotocol.model.MovieDetails
+import com.example.kitprotocol.db.entity.MovieEntity
 
 abstract class KitViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -13,17 +12,17 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
         const val LOG_TAG = "ViewModel"
     }
 
-    protected val _movies by lazy { MutableLiveData<List<MovieDetails>>().also { getTrendingMovies() } }
-    val movies: LiveData<List<MovieDetails>>
-        get() = _movies
+    protected val message by lazy { MutableLiveData<String?>() }
+    protected val isLoading by lazy { MutableLiveData<Boolean>().apply { value = false } }
 
-    protected val _message by lazy { MutableLiveData<String?>() }
-    val message: LiveData<String?>
-        get() = _message
+    fun getMessage(): LiveData<String?> = message
+    fun getIsLoading(): LiveData<Boolean> = isLoading
 
     fun resetMessage() {
-        _message.value = null
+        message.value = null
     }
 
-    abstract fun getTrendingMovies()
+    abstract fun fetchTrendingMovies()
+    abstract fun getMovies(): LiveData<List<MovieEntity>>
+
 }
