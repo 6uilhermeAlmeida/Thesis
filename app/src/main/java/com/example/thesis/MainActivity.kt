@@ -1,5 +1,6 @@
 package com.example.thesis
 
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +35,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupSwipeToRefresh() {
+        swipe_refresh_layout.setProgressBackgroundColorSchemeColor(Color.DKGRAY)
+        swipe_refresh_layout.setColorSchemeColors(Color.WHITE)
         swipe_refresh_layout.setOnRefreshListener {
             viewModel.fetchTrendingMovies()
         }
