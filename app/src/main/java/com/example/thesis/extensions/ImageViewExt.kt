@@ -9,7 +9,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 
-fun ImageView.glide(url: String, onReady: ((Drawable?) -> Unit)? = null, onFail: ((GlideException?) -> Unit)? = null) {
+fun ImageView.load(url: String, onReady: ((Drawable?) -> Unit)? = null, onFail: ((GlideException?) -> Unit)? = null) {
 
     Glide.with(this)
         .load(url)

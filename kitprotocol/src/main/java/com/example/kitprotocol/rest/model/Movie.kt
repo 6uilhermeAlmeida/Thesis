@@ -1,4 +1,4 @@
-package com.example.kitprotocol.model
+package com.example.kitprotocol.rest.model
 
 
 import com.google.gson.annotations.SerializedName
