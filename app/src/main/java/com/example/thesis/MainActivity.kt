@@ -2,6 +2,9 @@ package com.example.thesis
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
+import android.view.animation.AnticipateOvershootInterpolator
+import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -10,16 +13,19 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coroutineskit.viewmodel.CoroutinesViewModel
+import com.example.kitprotocol.db.entity.MovieEntity
 import com.example.kitprotocol.kitinterface.KitViewModel
 import com.example.rxjavakit.viewmodel.RxJavaViewModel
 import com.example.thesis.adapter.MovieAdapter
+import com.example.thesis.command.OpenYoutubeCommand
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_main.recyclerView_main
 import kotlinx.android.synthetic.main.activity_main.swipe_refresh_layout
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MovieAdapter.Protocol {
 
     private lateinit var viewModel: KitViewModel
-    private val movieAdapter = MovieAdapter()
+    private val movieAdapter = MovieAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,5 +73,27 @@ class MainActivity : AppCompatActivity() {
         viewModel.getIsLoading().observe(this, Observer { isLoading ->
             swipe_refresh_layout.isRefreshing = isLoading
         })
+    }
+
+    override fun onMovieClicked(view: View, movieEntity: MovieEntity) {
+
+        view.scaleX = 0.98f
+        view.scaleY = 0.98f
+        view.animate()
+            .scaleY(1f)
+            .scaleX(1f)
+            .setInterpolator(OvershootInterpolator())
+            .setDuration(500L)
+            .start()
+
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setTitle(movieEntity.title)
+            .setMessage(movieEntity.overview)
+
+        movieEntity.trailerKey?.let {
+            dialog.setPositiveButton("Play trailer") { _, _ -> OpenYoutubeCommand(this).open(it) }
+        }
+
+        dialog.show()
     }
 }

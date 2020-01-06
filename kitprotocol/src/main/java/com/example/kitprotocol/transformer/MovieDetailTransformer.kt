@@ -15,7 +15,8 @@ fun MovieDetails.toEntity(): MovieEntity? {
             runtime,
             backdropPath,
             posterPath,
-            overview!!
+            overview!!,
+            videos?.getOneTrailerForYoutubeOrNull()
         )
     }
 

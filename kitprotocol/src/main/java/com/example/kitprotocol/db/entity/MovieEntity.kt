@@ -13,5 +13,7 @@ data class MovieEntity(
     val runtime: Int?,
     val backdropPath: String?,
     val posterPath: String?,
-    val overview: String
+    val overview: String,
+    // Youtube key
+    val trailerKey: String?
 )

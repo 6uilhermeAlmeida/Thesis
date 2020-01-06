@@ -6,6 +6,7 @@ import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kitprotocol.constant.Constants
 import com.example.kitprotocol.db.entity.MovieEntity
+import com.example.thesis.adapter.MovieAdapter
 import com.example.thesis.extensions.load
 import kotlinx.android.synthetic.main.movie_item.view.imageView_backdrop
 import kotlinx.android.synthetic.main.movie_item.view.imageView_poster
@@ -17,8 +18,9 @@ import kotlinx.android.synthetic.main.movie_item.view.textView_title
 
 class MovieViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
-    fun bind(movie: MovieEntity) = view.apply {
+    fun bind(movie: MovieEntity, protocol: MovieAdapter.Protocol) = view.apply {
 
+        view.setOnClickListener { protocol.onMovieClicked(this, movie) }
         textView_title.text = movie.title
         textView_genres.text = movie.genres
         textView_runtime.text = "${movie.runtime}M"
