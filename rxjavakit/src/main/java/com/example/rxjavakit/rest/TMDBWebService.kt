@@ -17,7 +17,11 @@ interface IMovieWebServiceRxJava {
     fun getTrendingMovies(@Query("api_key") apiKey: String = Constants.TMDB_API_KEY): Single<MovieResponse>
 
     @GET("movie/{movie_id}")
-    fun getMovieDetails(@Path("movie_id") movieId: Int, @Query("api_key") apiKey: String = Constants.TMDB_API_KEY): Single<MovieDetails>
+    fun getMovieDetails(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String = Constants.TMDB_API_KEY,
+        @Query("append_to_response") appendToResponse: String = Constants.APPEND_TO_RESPONSE.joinToString(",")
+    ): Single<MovieDetails>
 
 }
 

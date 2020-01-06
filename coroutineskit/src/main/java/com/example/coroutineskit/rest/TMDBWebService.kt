@@ -15,7 +15,11 @@ interface IMovieWebServiceCoroutines {
     suspend fun getTrendingMovies(@Query("api_key") apiKey: String = Constants.TMDB_API_KEY): MovieResponse
 
     @GET("movie/{movie_id}")
-    suspend fun getMovieDetails(@Path("movie_id") movieId: Int, @Query("api_key") apiKey: String = Constants.TMDB_API_KEY): MovieDetails
+    suspend fun getMovieDetails(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String = Constants.TMDB_API_KEY,
+        @Query("append_to_response") appendToResponse: String = Constants.APPEND_TO_RESPONSE.joinToString (",")
+    ): MovieDetails
 
 }
 
@@ -29,7 +33,4 @@ object MovieWebServiceCoroutines {
             .build()
             .create(IMovieWebServiceCoroutines::class.java)
     }
-
-    fun getImageUrl(specific : String?) = "https://image.tmdb.org/t/p/w500$specific"
-
 }
