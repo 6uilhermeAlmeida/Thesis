@@ -77,15 +77,6 @@ class MainActivity : AppCompatActivity(), MovieAdapter.Protocol {
 
     override fun onMovieClicked(view: View, movieEntity: MovieEntity) {
 
-        view.scaleX = 0.98f
-        view.scaleY = 0.98f
-        view.animate()
-            .scaleY(1f)
-            .scaleX(1f)
-            .setInterpolator(OvershootInterpolator())
-            .setDuration(500L)
-            .start()
-
         val dialog = MaterialAlertDialogBuilder(this)
             .setTitle(movieEntity.title)
             .setMessage(movieEntity.overview)

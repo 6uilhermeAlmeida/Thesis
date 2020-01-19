@@ -20,7 +20,7 @@ interface IMovieWebServiceRxJava {
     fun getMovieDetails(
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String = Constants.TMDB_API_KEY,
-        @Query("append_to_response") appendToResponse: String = Constants.APPEND_TO_RESPONSE.joinToString(",")
+        @Query("append_to_response") appendToResponse: List<String> = Constants.APPEND_TO_RESPONSE
     ): Single<MovieDetails>
 
 }
