@@ -57,4 +57,7 @@ dependencies {
     api("androidx.room:room-rxjava2:$room_version")
     api ('com.squareup.retrofit2:adapter-rxjava2:2.7.1')
 
+    // Google Play Services
+    api('com.google.android.gms:play-services-location:17.0.0')
+
 }

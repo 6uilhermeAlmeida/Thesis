@@ -21,6 +21,9 @@ interface IMovieWebServiceCoroutines {
         @Query("append_to_response") appendToResponse: List<String> = Constants.APPEND_TO_RESPONSE
     ): MovieDetails
 
+    @GET("movie/now_playing")
+    suspend fun getMoviesNowPlayingForRegion(@Query("region") countryCode : String) : MovieResponse
+
 }
 
 object MovieWebServiceCoroutines {
