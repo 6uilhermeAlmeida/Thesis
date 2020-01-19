@@ -10,7 +10,7 @@
     app:cardElevation="2dp"
     app:cardPreventCornerOverlap="true"
     android:focusable="true"
-    android:foreground="?selectableItemBackground"
+    android:foreground="?selectableItemBackgroundBorderless"
     app:cardCornerRadius="8dp"
     app:cardUseCompatPadding="true">
 
@@ -56,8 +56,8 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cardView"
-            app:layout_constraintTop_toTopOf="@+id/cardView"
+            app:layout_constraintStart_toEndOf="@+id/cardView_poster"
+            app:layout_constraintTop_toTopOf="@+id/cardView_poster"
             tools:text="Interstellar" />
 
         <TextView
@@ -106,7 +106,7 @@
             tools:text="7.4" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
+            android:id="@+id/cardView_poster"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
