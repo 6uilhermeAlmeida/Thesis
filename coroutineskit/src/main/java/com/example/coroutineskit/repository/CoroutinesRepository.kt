@@ -21,7 +21,7 @@ class CoroutinesRepository(
         get() = movieDao.all()
 
 
-    suspend fun fetchMovies() = coroutineScope {
+    suspend fun fetchTrendingMovies() = coroutineScope {
 
         // Get trending movies
         val trendingMovies: List<Movie> = remoteServiceCoroutines.getTrendingMovies().results
@@ -36,5 +36,9 @@ class CoroutinesRepository(
             movieDao.nuke()
             movieDao.insertAll(it)
         }
+    }
+
+    suspend fun fetchMoviesNowPlaying(countryCode: String) = coroutineScope {
+       remoteServiceCoroutines.getMoviesNowPlayingForRegion(countryCode)
     }
 }

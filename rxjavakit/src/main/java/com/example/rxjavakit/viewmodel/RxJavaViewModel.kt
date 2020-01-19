@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers
 
 class RxJavaViewModel(application: Application) : KitViewModel(application) {
 
-    private val repository: RxJavaRepository = RxJavaRepository(
+    override val repository: RxJavaRepository = RxJavaRepository(
         MovieWebServiceRxJava.service,
         MovieDatabase.getInstance(application.applicationContext).movieDao
     )
@@ -42,11 +42,13 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
         disposableBag.add(disposable)
     }
 
-    override fun getMovies(): LiveData<List<MovieEntity>> = repository.movies
+    override fun fetchMoviesForCurrentLocation() {
+
+    }
 
     override fun onCleared() {
-        super.onCleared()
         disposableBag.dispose()
+        super.onCleared()
     }
 
 }
