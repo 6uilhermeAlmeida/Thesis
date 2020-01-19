@@ -3,8 +3,6 @@ package com.example.thesis
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.view.animation.AnticipateOvershootInterpolator
-import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -12,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.coroutineskit.viewmodel.CoroutinesViewModel
 import com.example.kitprotocol.db.entity.MovieEntity
 import com.example.kitprotocol.kitinterface.KitViewModel
 import com.example.rxjavakit.viewmodel.RxJavaViewModel
@@ -56,7 +53,7 @@ class MainActivity : AppCompatActivity(), MovieAdapter.Protocol {
     }
 
     private fun setupObservers() {
-        viewModel.getMovies().observe(this, Observer { movies ->
+        viewModel.getTrendingMovies().observe(this, Observer { movies ->
             if (movies.isEmpty()) return@Observer
             movieAdapter.submitList(movies) {
                 recyclerView_main.scrollToPosition(0)

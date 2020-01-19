@@ -2,18 +2,16 @@ package com.example.coroutineskit.viewmodel
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.coroutineskit.repository.CoroutinesRepository
 import com.example.coroutineskit.rest.MovieWebServiceCoroutines
 import com.example.kitprotocol.db.MovieDatabase
-import com.example.kitprotocol.db.entity.MovieEntity
 import com.example.kitprotocol.kitinterface.KitViewModel
 import kotlinx.coroutines.launch
 
 class CoroutinesViewModel(application: Application) : KitViewModel(application) {
 
-    private val repository: CoroutinesRepository = CoroutinesRepository(
+    override val repository: CoroutinesRepository = CoroutinesRepository(
         MovieWebServiceCoroutines.service,
         MovieDatabase.getInstance(application.applicationContext).movieDao
     )
@@ -34,6 +32,4 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
             isLoading.value = false
         }
     }
-
-    override fun getMovies(): LiveData<List<MovieEntity>> = repository.movies
 }
