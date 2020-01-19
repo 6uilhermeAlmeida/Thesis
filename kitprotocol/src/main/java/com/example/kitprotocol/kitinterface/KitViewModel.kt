@@ -12,17 +12,19 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
         const val LOG_TAG = "ViewModel"
     }
 
+    protected abstract val repository: KitRepository
+
     protected val message by lazy { MutableLiveData<String?>() }
     protected val isLoading by lazy { MutableLiveData<Boolean>().apply { value = false } }
 
     fun getMessage(): LiveData<String?> = message
     fun getIsLoading(): LiveData<Boolean> = isLoading
+    fun getTrendingMovies(): LiveData<List<MovieEntity>> = repository.movies
 
     fun resetMessage() {
         message.value = null
     }
 
     abstract fun fetchTrendingMovies()
-    abstract fun getMovies(): LiveData<List<MovieEntity>>
 
 }
