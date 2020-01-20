@@ -6,6 +6,7 @@ import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kitprotocol.constant.Constants
 import com.example.kitprotocol.db.entity.MovieEntity
+import com.example.thesis.R
 import com.example.thesis.adapter.MovieAdapter
 import com.example.thesis.extensions.load
 import kotlinx.android.synthetic.main.movie_item.view.imageView_backdrop
@@ -23,11 +24,11 @@ class MovieViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         view.setOnClickListener { protocol.onMovieClicked(this, movie) }
         textView_title.text = movie.title
         textView_genres.text = movie.genres
-        textView_runtime.text = "${movie.runtime}M"
+        textView_runtime.text = view.context.getString(R.string.runtime, movie.runtime.toString())
         textView_popularity.text = movie.voteAverage.toString()
+
         imageView_backdrop.load(Constants.getImageUrl(movie.backdropPath))
         imageView_poster.load(Constants.getImageUrl(movie.posterPath), { drawable ->
-
             val bitmap = (drawable as? BitmapDrawable)?.bitmap ?: return@load
             Palette.from(bitmap).generate { palette ->
                 val swatch = palette?.darkMutedSwatch ?: palette?.darkVibrantSwatch

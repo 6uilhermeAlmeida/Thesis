@@ -2,8 +2,11 @@ package com.example.rxjavakit.viewmodel
 
 import android.app.Application
 import android.util.Log
+import androidx.lifecycle.LiveData
 import com.example.kitprotocol.db.MovieDatabase
+import com.example.kitprotocol.db.entity.MovieEntity
 import com.example.kitprotocol.kitinterface.KitViewModel
+import com.example.rxjavakit.extension.asLiveData
 import com.example.rxjavakit.repository.RxJavaRepository
 import com.example.rxjavakit.rest.MovieWebServiceRxJava
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -40,9 +43,10 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
         disposableBag.add(disposable)
     }
 
+    override fun getTrendingMovies(): LiveData<List<MovieEntity>> = repository.movies.asLiveData()
+
     override fun onCleared() {
         super.onCleared()
         disposableBag.dispose()
     }
-
 }

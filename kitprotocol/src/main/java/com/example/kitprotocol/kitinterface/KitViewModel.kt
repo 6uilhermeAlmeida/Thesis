@@ -19,12 +19,11 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
 
     fun getMessage(): LiveData<String?> = message
     fun getIsLoading(): LiveData<Boolean> = isLoading
-    fun getTrendingMovies(): LiveData<List<MovieEntity>> = repository.movies
 
     fun resetMessage() {
         message.value = null
     }
 
     abstract fun fetchTrendingMovies()
-
+    abstract fun getTrendingMovies(): LiveData<List<MovieEntity>>
 }
