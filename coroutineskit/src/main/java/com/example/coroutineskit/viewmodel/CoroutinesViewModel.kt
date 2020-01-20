@@ -4,6 +4,8 @@ import android.app.Application
 import android.location.Location
 import android.os.Looper
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.coroutineskit.repository.CoroutinesRepository
 import com.example.coroutineskit.rest.MovieWebServiceCoroutines
@@ -97,4 +99,5 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
             }
         }
     }
+    override fun getTrendingMovies(): LiveData<List<MovieEntity>> = repository.movies.asLiveData()
 }

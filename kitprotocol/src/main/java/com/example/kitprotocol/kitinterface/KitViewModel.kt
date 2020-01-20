@@ -20,7 +20,6 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
     protected val locationServiceClient: FusedLocationProviderClient by lazy {
         LocationServices.getFusedLocationProviderClient(application.applicationContext)
     }
-
     protected val geocoder by lazy { Geocoder(application.applicationContext) }
 
     protected val message by lazy { MutableLiveData<String?>() }
@@ -38,5 +37,6 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
     }
 
     abstract fun fetchTrendingMovies()
+    abstract fun getTrendingMovies(): LiveData<List<MovieEntity>>
     abstract fun fetchMoviesForCurrentLocation()
 }
