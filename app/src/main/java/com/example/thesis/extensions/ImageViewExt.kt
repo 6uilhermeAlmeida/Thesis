@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
@@ -14,6 +15,7 @@ fun ImageView.load(url: String, onReady: ((Drawable?) -> Unit)? = null, onFail: 
     Glide.with(this)
         .load(url)
         .transition(DrawableTransitionOptions.withCrossFade())
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
         .listener(
 
             object : RequestListener<Drawable?> {

@@ -1,6 +1,5 @@
 package com.example.coroutineskit.repository
 
-import androidx.lifecycle.LiveData
 import com.example.coroutineskit.rest.IMovieWebServiceCoroutines
 import com.example.kitprotocol.db.dao.MovieDao
 import com.example.kitprotocol.db.entity.MovieEntity
@@ -10,16 +9,15 @@ import com.example.kitprotocol.transformer.toEntity
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
 
 class CoroutinesRepository(
     private val remoteServiceCoroutines: IMovieWebServiceCoroutines,
     private val movieDao: MovieDao
-) :
-    KitRepository {
+) : KitRepository {
 
-    override val movies: LiveData<List<MovieEntity>>
-        get() = movieDao.all()
-
+    val movies: Flow<List<MovieEntity>>
+        get() = movieDao.allByFlow()
 
     suspend fun fetchTrendingMovies() = coroutineScope {
 
@@ -33,8 +31,7 @@ class CoroutinesRepository(
 
         // Insert in local database
         detailedMovies.mapNotNull { it.toEntity() }.let {
-            movieDao.nuke()
-            movieDao.insertAll(it)
+            movieDao.fresh(it)
         }
     }
 

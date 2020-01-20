@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kitprotocol.db.entity.MovieEntity
 import com.example.kitprotocol.kitinterface.KitViewModel
-import com.example.rxjavakit.viewmodel.RxJavaViewModel
 import com.example.thesis.adapter.MovieAdapter
 import com.example.thesis.command.OpenYoutubeCommand
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -28,7 +27,7 @@ class MainActivity : AppCompatActivity(), MovieAdapter.Protocol {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel = ViewModelProviders.of(this)[RxJavaViewModel::class.java]
+        viewModel = ViewModelProviders.of(this)[CoroutinesViewModel::class.java]
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
@@ -40,9 +39,7 @@ class MainActivity : AppCompatActivity(), MovieAdapter.Protocol {
     private fun setupSwipeToRefresh() {
         swipe_refresh_layout.setProgressBackgroundColorSchemeColor(Color.DKGRAY)
         swipe_refresh_layout.setColorSchemeColors(Color.WHITE)
-        swipe_refresh_layout.setOnRefreshListener {
-            viewModel.fetchTrendingMovies()
-        }
+        swipe_refresh_layout.setOnRefreshListener { viewModel.fetchTrendingMovies() }
     }
 
     private fun setupMovieList() {
@@ -54,10 +51,7 @@ class MainActivity : AppCompatActivity(), MovieAdapter.Protocol {
 
     private fun setupObservers() {
         viewModel.getTrendingMovies().observe(this, Observer { movies ->
-            if (movies.isEmpty()) return@Observer
-            movieAdapter.submitList(movies) {
-                recyclerView_main.scrollToPosition(0)
-            }
+            if (movies.isNotEmpty()) movieAdapter.submitList(movies)
         })
 
         viewModel.getMessage().observe(this, Observer { message ->
