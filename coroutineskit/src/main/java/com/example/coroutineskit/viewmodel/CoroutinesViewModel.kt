@@ -10,9 +10,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.coroutineskit.repository.CoroutinesRepository
 import com.example.coroutineskit.rest.MovieWebServiceCoroutines
 import com.example.kitprotocol.db.MovieDatabase
-import com.example.kitprotocol.extension.suspend
+import com.example.kitprotocol.db.entity.MovieEntity
 import com.example.kitprotocol.kitinterface.KitViewModel
-import com.google.android.gms.location.LocationAvailability
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -22,7 +21,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CoroutinesViewModel(application: Application) : KitViewModel(application) {
 
@@ -38,11 +36,10 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
                 offer(result?.locations?.get(0))
                 super.onLocationResult(result)
             }
-
         }
 
         locationServiceClient.requestLocationUpdates(
-            LocationRequest().setInterval(10000)
+            LocationRequest().setInterval(10000L).setFastestInterval(5000L)
                 .setSmallestDisplacement(20f), callback, Looper.getMainLooper()
         )
 
@@ -51,8 +48,7 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
 
     init {
         fetchTrendingMovies()
-        viewModelScope.launch {
-
+        viewModelScope.launch(Dispatchers.IO) {
             locationFlow.collect {
                 val location = it ?: throw IllegalArgumentException("Location is null")
                 val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
@@ -60,10 +56,8 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
                 val movies = repository.fetchMoviesNowPlaying(countryCode).results
 
                 Log.d(LOG_TAG, "Fetched ${movies.size} movies for $countryCode")
-
                 moviesForLocation.postValue(movies)
             }
-
         }
     }
 
@@ -84,20 +78,6 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
 
     override fun fetchMoviesForCurrentLocation() {
 
-        viewModelScope.launch {
-
-            try {
-
-                withContext(Dispatchers.IO) {
-
-                    val location = locationServiceClient.lastLocation.suspend()
-
-                }
-            } catch (t: Throwable) {
-                message.value = "Could not fetch movies for your region."
-                Log.e(LOG_TAG, "Could not fetch movies for your region.", t)
-            }
-        }
     }
     override fun getTrendingMovies(): LiveData<List<MovieEntity>> = repository.movies.asLiveData()
 }

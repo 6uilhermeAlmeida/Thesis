@@ -22,7 +22,10 @@ interface IMovieWebServiceCoroutines {
     ): MovieDetails
 
     @GET("movie/now_playing")
-    suspend fun getMoviesNowPlayingForRegion(@Query("region") countryCode : String) : MovieResponse
+    suspend fun getMoviesNowPlayingForRegion(
+        @Query("region") countryCode: String,
+        @Query("api_key") apiKey: String = Constants.TMDB_API_KEY
+        ): MovieResponse
 
 }
 

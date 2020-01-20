@@ -5,6 +5,7 @@ import android.location.Geocoder
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.kitprotocol.db.entity.MovieEntity
 import com.example.kitprotocol.rest.model.Movie
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -30,7 +31,6 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
     fun getMessage(): LiveData<String?> = message
     fun getIsLoading(): LiveData<Boolean> = isLoading
     fun getMoviesForLocation(): LiveData<List<Movie>> = moviesForLocation
-    fun getTrendingMovies() = repository.movies
 
     fun resetMessage() {
         message.value = null
