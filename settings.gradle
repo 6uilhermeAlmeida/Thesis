@@ -1,2 +1,2 @@
-include ':app', ':coroutineskit', ':rxjavakit', ':kitprotocol', ':asynctaskkit'
+include ':app', ':coroutineskit', ':rxjavakit', ':kitprotocol'
 rootProject.name='Thesis'
