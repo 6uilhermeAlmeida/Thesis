@@ -53,6 +53,9 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
 
             return@map list as List<Item>
         }
+        .doOnError { Log.e(LOG_TAG, "Error fetching movies.", it) }
+        .doOnComplete { Log.d(LOG_TAG, "Flowable completed.") }
+        .subscribeOn(Schedulers.io())
         .asLiveData()
 
     override fun onCleared() {
