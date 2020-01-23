@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.kitprotocol.db.entity.MovieEntity
 
 abstract class KitViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -25,5 +24,5 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
     }
 
     abstract fun fetchTrendingMovies()
-    abstract fun getTrendingMovies(): LiveData<List<MovieEntity>>
+    abstract fun getTrendingMovies(): LiveData<List<MovieProtocol.Item>>
 }

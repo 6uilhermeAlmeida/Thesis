@@ -13,7 +13,16 @@
 
     <style name="dialogTheme" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="android:dialogCornerRadius">8dp</item>
-        <item name="android:backgroundTint">@android:color/background_dark</item>
+    </style>
+
+    <style name="expandedTitleAppearance" parent="@style/TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/raleway_bold</item>
+        <item name="android:textSize">48sp</item>
+    </style>
+
+    <style name="collapsedTitleAppearance" parent="@style/TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/raleway_bold</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
 </resources>

@@ -13,13 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.coroutineskit.viewmodel.CoroutinesViewModel
 import com.example.kitprotocol.db.entity.MovieEntity
 import com.example.kitprotocol.kitinterface.KitViewModel
+import com.example.kitprotocol.kitinterface.MovieProtocol
 import com.example.thesis.adapter.MovieAdapter
 import com.example.thesis.command.OpenYoutubeCommand
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_main.recyclerView_main
 import kotlinx.android.synthetic.main.activity_main.swipe_refresh_layout
 
-class MainActivity : AppCompatActivity(), MovieAdapter.Protocol {
+class MainActivity : AppCompatActivity(), MovieProtocol {
 
     private lateinit var viewModel: KitViewModel
     private val movieAdapter = MovieAdapter(this)
