@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import com.example.kitprotocol.db.MovieDatabase
 import com.example.kitprotocol.db.entity.MovieEntity
 import com.example.kitprotocol.kitinterface.KitViewModel
+import com.example.kitprotocol.kitinterface.MovieProtocol.Item
 import com.example.rxjavakit.extension.asLiveData
 import com.example.rxjavakit.repository.RxJavaRepository
 import com.example.rxjavakit.rest.MovieWebServiceRxJava
@@ -43,10 +44,23 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
         disposableBag.add(disposable)
     }
 
+    override fun getTrendingMovies(): LiveData<List<Item>> = repository.movies
+        .map { movies: List<MovieEntity> ->
+
+            // Build a list according to our UI protocol
+            val list: MutableList<Item> = movies.map { Item.MovieItem(it) }.toMutableList()
+            list.add(Item.FooterItem("Thanks to TMDB API for the movie data."))
+
+            return@map list as List<Item>
+        }
+        .doOnError { Log.e(LOG_TAG, "Error fetching movies.", it) }
+        .doOnComplete { Log.d(LOG_TAG, "Flowable completed.") }
+        .subscribeOn(Schedulers.io())
+        .asLiveData()
+
     override fun fetchMoviesForCurrentLocation() {
 
     }
-    override fun getTrendingMovies(): LiveData<List<MovieEntity>> = repository.movies.asLiveData()
 
     override fun onCleared() {
         disposableBag.dispose()
