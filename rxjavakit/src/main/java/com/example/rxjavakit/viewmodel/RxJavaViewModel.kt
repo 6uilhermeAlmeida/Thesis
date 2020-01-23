@@ -46,7 +46,12 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
 
     override fun getTrendingMovies(): LiveData<List<Item>> = repository.movies
         .map { movies: List<MovieEntity> ->
-            movies.map { Item.MovieItem(it) } as List<Item>
+
+            // Build a list according to our UI protocol
+            val list: MutableList<Item> = movies.map { Item.MovieItem(it) }.toMutableList()
+            list.add(Item.FooterItem("Thanks to TMDB API for the movie data."))
+
+            return@map list as List<Item>
         }
         .asLiveData()
 
