@@ -8,6 +8,7 @@ import com.example.kitprotocol.constant.Constants
 import com.example.kitprotocol.kitinterface.MovieProtocol
 import com.example.thesis.R
 import com.example.thesis.extensions.load
+import kotlinx.android.synthetic.main.movie_item.view.button_play_trailer
 import kotlinx.android.synthetic.main.movie_item.view.imageView_backdrop
 import kotlinx.android.synthetic.main.movie_item.view.imageView_poster
 import kotlinx.android.synthetic.main.movie_item.view.imageView_shade
@@ -28,6 +29,13 @@ class MovieItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view
         textView_genres.text = movie.genres
         textView_runtime.text = view.context.getString(R.string.runtime, movie.runtime.toString())
         textView_popularity.text = movie.voteAverage.toString()
+
+        movieItem.movieEntity.trailerKey?.let { key ->
+            button_play_trailer.visibility = View.VISIBLE
+            button_play_trailer.setOnClickListener { protocol.onPlayTrailer(key) }
+        } ?: run {
+            button_play_trailer.visibility = View.GONE
+        }
 
         imageView_backdrop.load(Constants.getImageUrl(movie.backdropPath))
         imageView_poster.load(Constants.getImageUrl(movie.posterPath), { drawable ->

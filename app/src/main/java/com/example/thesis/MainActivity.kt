@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity(), MovieProtocol {
 
     private fun setupObservers() {
         viewModel.getTrendingMovies().observe(this, Observer { movies ->
-            if (movies.isNotEmpty()) movieAdapter.submitList(movies){
+            if (movies.isNotEmpty()) movieAdapter.submitList(movies) {
                 recyclerView_main.scrollToPosition(0)
             }
         })
@@ -77,9 +77,13 @@ class MainActivity : AppCompatActivity(), MovieProtocol {
             .setMessage(movieEntity.overview)
 
         movieEntity.trailerKey?.let {
-            dialog.setPositiveButton("Play trailer") { _, _ -> OpenYoutubeCommand(this).open(it) }
+            dialog.setPositiveButton(getString(R.string.play_trailer)) { _, _ -> onPlayTrailer(it) }
         }
 
         dialog.show()
+    }
+
+    override fun onPlayTrailer(key: String) {
+        OpenYoutubeCommand(this).open(key)
     }
 }
