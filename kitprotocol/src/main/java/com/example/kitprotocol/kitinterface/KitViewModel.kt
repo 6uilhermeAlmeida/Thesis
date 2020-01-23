@@ -37,6 +37,6 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
     }
 
     abstract fun fetchTrendingMovies()
-    abstract fun getTrendingMovies(): LiveData<List<MovieEntity>>
     abstract fun fetchMoviesForCurrentLocation()
+    abstract fun getTrendingMovies(): LiveData<List<MovieProtocol.Item>>
 }
