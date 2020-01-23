@@ -32,15 +32,6 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
         MovieDatabase.getInstance(application.applicationContext).movieDao
     )
 
-    private val logToAnalyticsFlow: Flow<Unit> = flow {
-        val instance = FirebaseAnalytics.getInstance(application)
-        instance.logEvent(Constants.REFRESH_EVENT_KEY, Bundle())
-        emit(Unit)
-    }.catch {
-        Log.e(LOG_TAG, "Error writing to Analytics", it)
-        emit(Unit)
-    }
-
     init {
         fetchTrendingMovies()
     }
@@ -52,7 +43,7 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
                 repository.fetchMovies()
             } catch (t: Throwable) {
                 message.value = "Could not fetch movies."
-                Log.e(LOG_TAG, "Could not fetch movies", t)
+                Log.e(LOG_TAG, "Could not fetch movies.", t)
             }
             isLoading.value = false
         }
@@ -67,12 +58,8 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
 
             return@map list
         }
-        .catch {
-            Log.e(LOG_TAG, "Error fetching movies.", it)
-        }
-        .onCompletion {
-            Log.d(LOG_TAG, "AHAHHAHAHA")
-        }
+        .catch { Log.e(LOG_TAG, "Error fetching movies.", it) }
+        .onCompletion { Log.d(LOG_TAG, "Flow completed.") }
         .flowOn(Dispatchers.IO)
         .asLiveData()
 }
