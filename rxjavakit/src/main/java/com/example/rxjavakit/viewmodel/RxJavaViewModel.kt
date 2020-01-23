@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import com.example.kitprotocol.db.MovieDatabase
 import com.example.kitprotocol.db.entity.MovieEntity
 import com.example.kitprotocol.kitinterface.KitViewModel
+import com.example.kitprotocol.kitinterface.MovieProtocol.Item
 import com.example.rxjavakit.extension.asLiveData
 import com.example.rxjavakit.repository.RxJavaRepository
 import com.example.rxjavakit.rest.MovieWebServiceRxJava
@@ -43,7 +44,11 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
         disposableBag.add(disposable)
     }
 
-    override fun getTrendingMovies(): LiveData<List<MovieEntity>> = repository.movies.asLiveData()
+    override fun getTrendingMovies(): LiveData<List<Item>> = repository.movies
+        .map { movies: List<MovieEntity> ->
+            movies.map { Item.MovieItem(it) } as List<Item>
+        }
+        .asLiveData()
 
     override fun onCleared() {
         super.onCleared()
