@@ -53,7 +53,9 @@ class MainActivity : AppCompatActivity(), MovieProtocol {
 
     private fun setupObservers() {
         viewModel.getTrendingMovies().observe(this, Observer { movies ->
-            if (movies.isNotEmpty()) movieAdapter.submitList(movies)
+            if (movies.isNotEmpty()) movieAdapter.submitList(movies){
+                recyclerView_main.scrollToPosition(0)
+            }
         })
 
         viewModel.getMessage().observe(this, Observer { message ->
