@@ -2,13 +2,14 @@ package com.example.kitprotocol.extension
 
 import com.google.android.gms.tasks.Task
 import io.reactivex.Single
+import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 suspend fun <T> Task<T?>.suspend(): T? = suspendCoroutine { continuation ->
 
     addOnSuccessListener { result ->
-        result?.let { continuation.resumeWith(Result.success(it)) } ?: continuation.resumeWithException(IllegalArgumentException())
+       continuation.resume(result)
     }
 
     addOnFailureListener { continuation.resumeWithException(it) }

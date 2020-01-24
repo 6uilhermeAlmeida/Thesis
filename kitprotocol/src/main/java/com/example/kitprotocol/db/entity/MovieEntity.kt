@@ -7,12 +7,12 @@ import androidx.room.PrimaryKey
 data class MovieEntity(
     @PrimaryKey
     val id: Int,
-    val title: String?,
-    val genres: String?,
+    val title: String,
+    val genres: String,
     val voteAverage: Double?,
     val runtime: Int?,
     val backdropPath: String?,
-    val posterPath: String?,
+    val posterPath: String,
     val overview: String,
     // Youtube key
     val trailerKey: String?
