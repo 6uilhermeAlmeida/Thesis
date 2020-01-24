@@ -27,8 +27,20 @@ class MovieItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view
 
         textView_title.text = movie.title
         textView_genres.text = movie.genres
-        textView_runtime.text = view.context.getString(R.string.runtime, movie.runtime.toString())
-        textView_popularity.text = movie.voteAverage.toString()
+
+        movie.runtime?.let {
+            textView_runtime.text = view.context.getString(R.string.runtime, it)
+            textView_runtime.visibility = View.VISIBLE
+        } ?: run {
+            textView_runtime.visibility = View.GONE
+        }
+
+        movie.voteAverage?.let {
+            textView_popularity.text = movie.voteAverage.toString()
+            textView_popularity.visibility = View.VISIBLE
+        } ?: run {
+            textView_popularity.visibility = View.GONE
+        }
 
         movieItem.movieEntity.trailerKey?.let { key ->
             button_play_trailer.visibility = View.VISIBLE

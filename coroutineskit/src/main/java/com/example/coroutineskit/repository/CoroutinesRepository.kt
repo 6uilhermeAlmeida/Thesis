@@ -1,9 +1,12 @@
 package com.example.coroutineskit.repository
 
+import android.util.Log
 import com.example.coroutineskit.rest.IMovieWebServiceCoroutines
 import com.example.kitprotocol.db.dao.MovieDao
 import com.example.kitprotocol.db.entity.MovieEntity
 import com.example.kitprotocol.kitinterface.KitRepository
+import com.example.kitprotocol.kitinterface.KitRepository.Companion.LOG_TAG
+import com.example.kitprotocol.kitinterface.KitViewModel
 import com.example.kitprotocol.rest.model.Movie
 import com.example.kitprotocol.transformer.toEntity
 import kotlinx.coroutines.async
@@ -36,6 +39,20 @@ class CoroutinesRepository(
     }
 
     suspend fun fetchMoviesNowPlaying(countryCode: String) = coroutineScope {
-       remoteServiceCoroutines.getMoviesNowPlayingForRegion(countryCode)
+
+        val movies = remoteServiceCoroutines.getMoviesNowPlayingForRegion(countryCode).results
+
+        Log.d(LOG_TAG, "Fetched ${movies.size} movies for $countryCode")
+
+        // Get the details for trending movies in parallel
+        val detailedMovies = movies
+            .map { async { remoteServiceCoroutines.getMovieDetails(it.id) } }
+            .awaitAll()
+
+        // Insert in local database
+        detailedMovies.mapNotNull { it.toEntity() }.let {
+            movieDao.fresh(it)
+        }
+
     }
 }

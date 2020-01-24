@@ -9,13 +9,13 @@ fun MovieDetails.toEntity(): MovieEntity? {
     val result: Result<MovieEntity> = runCatching {
         MovieEntity(
             id!!,
-            title ?: originalTitle,
-            genres?.joinToString(", ") { it.name },
+            title ?: originalTitle!!,
+            genres!!.joinToString(", ") { it.name },
             voteAverage,
             runtime,
             backdropPath,
-            posterPath,
-            overview!!,
+            posterPath!!,
+            overview?.takeIf { it.isNotBlank() }!!,
             videos?.getOneTrailerForYoutubeOrNull()
         )
     }
