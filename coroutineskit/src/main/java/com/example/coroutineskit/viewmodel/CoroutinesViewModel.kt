@@ -16,9 +16,9 @@ import com.example.kitprotocol.kitinterface.KitViewModel
 import com.example.kitprotocol.kitinterface.MovieProtocol.Item
 import com.google.android.gms.location.LocationAvailability
 import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -27,6 +27,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class CoroutinesViewModel(application: Application) : KitViewModel(application) {
@@ -36,36 +38,48 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
         MovieDatabase.getInstance(application.applicationContext).movieDao
     )
 
+    private var locationJob: Job? = null
+
     private val locationFlow: Flow<Location?> = callbackFlow {
 
         val callback = object : LocationCallback() {
             override fun onLocationResult(result: LocationResult?) {
                 offer(result?.locations?.get(0))
-                super.onLocationResult(result)
             }
 
             override fun onLocationAvailability(availability: LocationAvailability?) {
                 Log.d(LOG_TAG, "Is the location available ? ${availability?.isLocationAvailable}")
+                if (availability?.isLocationAvailable == false) close(IllegalStateException("No gps."))
             }
 
         }
 
-        locationServiceClient.requestLocationUpdates(LocationRequest(), callback, Looper.getMainLooper()).suspend()
+        locationServiceClient.requestLocationUpdates(locationRequest, callback, Looper.getMainLooper()).suspend()
 
-        awaitClose { locationServiceClient.removeLocationUpdates(callback) }
+        awaitClose {
+            locationServiceClient.removeLocationUpdates(callback)
+            Log.d(LOG_TAG, "Closing location API.")
+        }
     }
 
     init {
         fetchTrendingMovies()
-        viewModelScope.launch(Dispatchers.IO) {
-            locationFlow.collect {
-                val location = it ?: throw IllegalArgumentException("Location is null")
-                val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                val countryCode = addresses.first().countryCode
-                repository.fetchMoviesNowPlaying(countryCode)
-            }
-        }
     }
+
+    override fun getMovies(): LiveData<List<Item>> = repository.movies
+        .map { movies: List<MovieEntity> ->
+
+            // Build a list according to our UI protocol
+            val list: MutableList<Item> = movies.map { Item.MovieItem(it) }.toMutableList()
+            list.add(Item.FooterItem("Thanks to TMDB API for the movie data."))
+
+            return@map list
+        }
+        .catch { Log.e(LOG_TAG, "Error fetching movies.", it) }
+        .onCompletion { Log.d(LOG_TAG, "Flow completed.") }
+        .flowOn(Dispatchers.IO)
+        .asLiveData()
+
 
     override fun fetchTrendingMovies() {
 
@@ -82,21 +96,32 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
         }
     }
 
-    override fun getTrendingMovies(): LiveData<List<Item>> = repository.movies
-        .map { movies: List<MovieEntity> ->
-
-            // Build a list according to our UI protocol
-            val list: MutableList<Item> = movies.map { Item.MovieItem(it) }.toMutableList()
-            list.add(Item.FooterItem("Thanks to TMDB API for the movie data."))
-
-            return@map list
+    override fun startUpdatesForLocalMovies() {
+        locationJob?.cancel()
+        locationJob = viewModelScope.launch {
+            locationFlow
+                .onStart { isLoading.postValue(true) }
+                .onEach {
+                    val location = it ?: throw IllegalArgumentException("Location is null")
+                    val addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
+                    val countryCode = addresses.first().countryCode
+                    repository.fetchMoviesNowPlaying(countryCode)
+                    isLoading.postValue(false)
+                    isLocalMovies.postValue(true)
+                }
+                .catch {
+                    Log.d(LOG_TAG, "Error")
+                    message.postValue("Could not load local movies. Check your connection and GPS.")
+                    isLoading.postValue(false)
+                }
+                .flowOn(Dispatchers.IO)
+                .collect()
         }
-        .catch { Log.e(LOG_TAG, "Error fetching movies.", it) }
-        .onCompletion { Log.d(LOG_TAG, "Flow completed.") }
-        .flowOn(Dispatchers.IO)
-        .asLiveData()
+    }
 
-    override fun fetchMoviesForCurrentLocation() {
-
+    override fun cancelUpdateForLocalMovies() {
+        locationJob?.cancel()
+        isLocalMovies.value = false
+        fetchTrendingMovies()
     }
 }

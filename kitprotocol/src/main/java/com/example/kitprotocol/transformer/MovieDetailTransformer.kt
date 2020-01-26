@@ -21,6 +21,6 @@ fun MovieDetails.toEntity(): MovieEntity? {
     }
 
     return result.getOrNull().also {
-        if (it == null) Log.e("MovieDetailTransformer", "Error during transform", result.exceptionOrNull())
+        if (it == null) Log.d("MovieDetailTransformer", "Error during transform", result.exceptionOrNull())
     }
 }
