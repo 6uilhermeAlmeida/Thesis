@@ -1,11 +1,15 @@
 package com.example.thesis
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,8 +23,14 @@ import com.example.thesis.command.OpenYoutubeCommand
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_main.recyclerView_main
 import kotlinx.android.synthetic.main.activity_main.swipe_refresh_layout
+import kotlinx.android.synthetic.main.activity_main.toolbar
 
 class MainActivity : AppCompatActivity(), MovieProtocol {
+
+    companion object {
+        const val LOCATION_PERMISSION = Manifest.permission.ACCESS_FINE_LOCATION
+        const val LOCATION_PERMISSION_REQ_CODE = 1
+    }
 
     private lateinit var viewModel: KitViewModel
     private val movieAdapter = MovieAdapter(this)
@@ -28,20 +38,41 @@ class MainActivity : AppCompatActivity(), MovieProtocol {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
 
         viewModel = ViewModelProviders.of(this)[CoroutinesViewModel::class.java]
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
         setupObservers()
         setupMovieList()
         setupSwipeToRefresh()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.local_movies -> {
+                if (isLocationPermissionGranted()) {
+                    viewModel.onLocalMoviesClick()
+                } else {
+                    requestPermissions(arrayOf(LOCATION_PERMISSION), LOCATION_PERMISSION_REQ_CODE)
+                }
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun setupSwipeToRefresh() {
         swipe_refresh_layout.setProgressBackgroundColorSchemeColor(Color.DKGRAY)
         swipe_refresh_layout.setColorSchemeColors(Color.WHITE)
-        swipe_refresh_layout.setOnRefreshListener { viewModel.fetchTrendingMovies() }
+        swipe_refresh_layout.setOnRefreshListener { viewModel.onRefresh() }
     }
 
     private fun setupMovieList() {
@@ -52,7 +83,7 @@ class MainActivity : AppCompatActivity(), MovieProtocol {
     }
 
     private fun setupObservers() {
-        viewModel.getTrendingMovies().observe(this, Observer { movies ->
+        viewModel.getMovies().observe(this, Observer { movies ->
             if (movies.isNotEmpty()) movieAdapter.submitList(movies) {
                 recyclerView_main.scrollToPosition(0)
             }
@@ -67,6 +98,11 @@ class MainActivity : AppCompatActivity(), MovieProtocol {
 
         viewModel.getIsLoading().observe(this, Observer { isLoading ->
             swipe_refresh_layout.isRefreshing = isLoading
+        })
+
+        viewModel.getIsLocalMovies().observe(this, Observer { isLocalMovies ->
+            val menuItem = toolbar.menu.findItem(R.id.local_movies) ?: return@Observer
+            menuItem.icon.setTint(getColor(if (isLocalMovies) R.color.colorAccent else R.color.colorPrimary))
         })
     }
 
@@ -86,4 +122,7 @@ class MainActivity : AppCompatActivity(), MovieProtocol {
     override fun onPlayTrailer(key: String) {
         OpenYoutubeCommand(this).open(key)
     }
+
+    private fun isLocationPermissionGranted(): Boolean =
+        ContextCompat.checkSelfPermission(this, LOCATION_PERMISSION) == PackageManager.PERMISSION_GRANTED
 }

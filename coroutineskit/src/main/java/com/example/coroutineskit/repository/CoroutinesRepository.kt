@@ -6,7 +6,6 @@ import com.example.kitprotocol.db.dao.MovieDao
 import com.example.kitprotocol.db.entity.MovieEntity
 import com.example.kitprotocol.kitinterface.KitRepository
 import com.example.kitprotocol.kitinterface.KitRepository.Companion.LOG_TAG
-import com.example.kitprotocol.kitinterface.KitViewModel
 import com.example.kitprotocol.rest.model.Movie
 import com.example.kitprotocol.transformer.toEntity
 import kotlinx.coroutines.async

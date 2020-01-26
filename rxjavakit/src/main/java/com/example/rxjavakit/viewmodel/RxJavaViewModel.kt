@@ -44,7 +44,14 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
         disposableBag.add(disposable)
     }
 
-    override fun getTrendingMovies(): LiveData<List<Item>> = repository.movies
+    override fun startUpdatesForLocalMovies() {
+
+    }
+
+    override fun cancelUpdateForLocalMovies() {
+    }
+
+    override fun getMovies(): LiveData<List<Item>> = repository.movies
         .map { movies: List<MovieEntity> ->
 
             // Build a list according to our UI protocol
@@ -57,10 +64,6 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
         .doOnComplete { Log.d(LOG_TAG, "Flowable completed.") }
         .subscribeOn(Schedulers.io())
         .asLiveData()
-
-    override fun fetchMoviesForCurrentLocation() {
-
-    }
 
     override fun onCleared() {
         disposableBag.dispose()
