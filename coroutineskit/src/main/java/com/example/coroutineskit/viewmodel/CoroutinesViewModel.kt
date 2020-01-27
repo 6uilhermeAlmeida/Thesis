@@ -51,7 +51,6 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
                 Log.d(LOG_TAG, "Is the location available ? ${availability?.isLocationAvailable}")
                 if (availability?.isLocationAvailable == false) close(IllegalStateException("No gps."))
             }
-
         }
 
         locationServiceClient.requestLocationUpdates(locationRequest, callback, Looper.getMainLooper()).suspend()
@@ -100,22 +99,23 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
         locationJob?.cancel()
         locationJob = viewModelScope.launch {
             locationFlow
-                .onStart { isLoading.postValue(true) }
                 .onEach {
                     val location = it ?: throw IllegalArgumentException("Location is null")
                     val addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
                     val countryCode = addresses.first().countryCode
                     repository.fetchMoviesNowPlaying(countryCode)
-                    isLoading.postValue(false)
-                    isLocalMovies.postValue(true)
-                }
-                .catch {
-                    Log.d(LOG_TAG, "Error")
-                    message.postValue("Could not load local movies. Check your connection and GPS.")
-                    isLoading.postValue(false)
                 }
                 .flowOn(Dispatchers.IO)
-                .collect()
+                .onStart { isLoading.value = true }
+                .catch {
+                    message.value = "Could not load local movies. Check your connection and GPS."
+                    isLoading.value = false
+                    cancelUpdateForLocalMovies()
+                }
+                .collect {
+                    isLoading.value = false
+                    isLocalMovies.value = true
+                }
         }
     }
 
