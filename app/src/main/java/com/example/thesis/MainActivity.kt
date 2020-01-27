@@ -42,8 +42,6 @@ class MainActivity : AppCompatActivity(), MovieProtocol {
 
         viewModel = ViewModelProviders.of(this)[CoroutinesViewModel::class.java]
 
-        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-
         setupObservers()
         setupMovieList()
         setupSwipeToRefresh()
