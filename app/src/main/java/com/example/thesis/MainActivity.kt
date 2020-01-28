@@ -18,6 +18,7 @@ import com.example.coroutineskit.viewmodel.CoroutinesViewModel
 import com.example.kitprotocol.db.entity.MovieEntity
 import com.example.kitprotocol.kitinterface.KitViewModel
 import com.example.kitprotocol.kitinterface.MovieProtocol
+import com.example.rxjavakit.viewmodel.RxJavaViewModel
 import com.example.thesis.adapter.MovieAdapter
 import com.example.thesis.command.OpenYoutubeCommand
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity(), MovieProtocol {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        viewModel = ViewModelProviders.of(this)[CoroutinesViewModel::class.java]
+        viewModel = ViewModelProviders.of(this)[RxJavaViewModel::class.java]
 
         setupObservers()
         setupMovieList()
@@ -123,4 +124,15 @@ class MainActivity : AppCompatActivity(), MovieProtocol {
 
     private fun isLocationPermissionGranted(): Boolean =
         ContextCompat.checkSelfPermission(this, LOCATION_PERMISSION) == PackageManager.PERMISSION_GRANTED
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LOCATION_PERMISSION_REQ_CODE) {
+            if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                viewModel.onLocalMoviesClick()
+            } else if (!shouldShowRequestPermissionRationale(LOCATION_PERMISSION)) {
+                viewModel.onLocationPermissionDeniedIndefinitely()
+            }
+        }
+    }
 }

@@ -23,6 +23,11 @@ interface IMovieWebServiceRxJava {
         @Query("append_to_response") appendToResponse: List<String> = Constants.APPEND_TO_RESPONSE
     ): Single<MovieDetails>
 
+    @GET("movie/now_playing")
+    fun getMoviesNowPlayingForRegion(
+        @Query("region") countryCode: String,
+        @Query("api_key") apiKey: String = Constants.TMDB_API_KEY
+    ): Single<MovieResponse>
 }
 
 object MovieWebServiceRxJava {

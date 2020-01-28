@@ -12,6 +12,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import java.lang.IllegalStateException
 
 class CoroutinesRepository(
     private val remoteServiceCoroutines: IMovieWebServiceCoroutines,

@@ -39,17 +39,16 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
     )
 
     private var locationJob: Job? = null
-
-    private val locationFlow: Flow<Location?> = callbackFlow {
+    private val locationFlow: Flow<Location> = callbackFlow {
 
         val callback = object : LocationCallback() {
-            override fun onLocationResult(result: LocationResult?) {
-                offer(result?.locations?.get(0))
+            override fun onLocationResult(result: LocationResult) {
+                offer(result.locations[0])
             }
 
-            override fun onLocationAvailability(availability: LocationAvailability?) {
-                Log.d(LOG_TAG, "Is the location available ? ${availability?.isLocationAvailable}")
-                if (availability?.isLocationAvailable == false) close(IllegalStateException("No gps."))
+            override fun onLocationAvailability(availability: LocationAvailability) {
+                Log.d(LOG_TAG, "Is the location available ? ${availability.isLocationAvailable}")
+                if (!availability.isLocationAvailable) close(IllegalStateException("No gps."))
             }
         }
 
@@ -99,8 +98,7 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
         locationJob?.cancel()
         locationJob = viewModelScope.launch {
             locationFlow
-                .onEach {
-                    val location = it ?: throw IllegalArgumentException("Location is null")
+                .onEach { location ->
                     val addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
                     val countryCode = addresses.first().countryCode
                     repository.fetchMoviesNowPlaying(countryCode)

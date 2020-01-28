@@ -5,6 +5,7 @@ import android.location.Geocoder
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.kitprotocol.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -16,14 +17,8 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
         const val ONE_MINUTE = 60000L
     }
 
-    protected abstract val repository: KitRepository
-
     protected val locationServiceClient: FusedLocationProviderClient by lazy {
         LocationServices.getFusedLocationProviderClient(application.applicationContext)
-    }
-
-    protected val geoCoder by lazy {
-        Geocoder(application.applicationContext)
     }
 
     protected val locationRequest by lazy {
@@ -33,9 +28,12 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
+    protected abstract val repository: KitRepository
+
     protected val message by lazy { MutableLiveData<String?>() }
     protected val isLoading by lazy { MutableLiveData<Boolean>().apply { value = false } }
     protected val isLocalMovies by lazy { MutableLiveData<Boolean>().apply { value = false } }
+    protected val geoCoder by lazy { Geocoder(application.applicationContext) }
 
     fun getMessage(): LiveData<String?> = message
     fun getIsLoading(): LiveData<Boolean> = isLoading
@@ -65,5 +63,9 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
         } else {
             startUpdatesForLocalMovies()
         }
+    }
+
+    fun onLocationPermissionDeniedIndefinitely() {
+        message.value = getApplication<Application>().getString(R.string.location_information_permission_denied)
     }
 }
