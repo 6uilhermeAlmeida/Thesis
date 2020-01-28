@@ -38,4 +38,23 @@ class RxJavaRepository(
             }
     }
 
+    fun fetchMoviesNowPlaying(countryCode : String): Completable {
+
+        return remoteService.getMoviesNowPlayingForRegion(countryCode) // Get trending movies
+            .flatMap { localMoviesResponse ->
+
+                // Get the details for trending movies in parallel
+                val trendingMovies = localMoviesResponse.results
+                val singlesToZip = trendingMovies.map { remoteService.getMovieDetails(it.id) }
+                Single.zip(singlesToZip) { it.toList() as List<MovieDetails> }
+            }
+            .flatMapCompletable { detailedMovies ->
+
+                // Insert in local database
+                movieDao.nukeAsCompletable()
+                    .andThen(movieDao.insertAllAsCompletable(detailedMovies.mapNotNull { it.toEntity() }))
+                    .andThen(Completable.complete())
+            }
+    }
+
 }

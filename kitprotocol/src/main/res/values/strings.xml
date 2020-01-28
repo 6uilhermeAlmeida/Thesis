@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">KitProtocol</string>
+    <string name="location_information_permission_denied">This feature requires location information. You can grant this permission in the app settings.</string>
 </resources>
