@@ -18,7 +18,7 @@ class RxJavaRepository(
     val movies: Flowable<List<MovieEntity>>
         get() = movieDao.allByFlowable()
 
-    fun fetchMovies(): Completable {
+    fun fetchTrendingMovies(): Completable {
 
         return remoteService.getTrendingMovies() // Get trending movies
             .flatMap { trendingMoviesResponse ->
@@ -44,8 +44,8 @@ class RxJavaRepository(
             .flatMap { localMoviesResponse ->
 
                 // Get the details for trending movies in parallel
-                val trendingMovies = localMoviesResponse.results
-                val singlesToZip = trendingMovies.map { remoteService.getMovieDetails(it.id) }
+                val localMovies = localMoviesResponse.results
+                val singlesToZip = localMovies.map { remoteService.getMovieDetails(it.id) }
                 Single.zip(singlesToZip) { it.toList() as List<MovieDetails> }
             }
             .flatMapCompletable { detailedMovies ->

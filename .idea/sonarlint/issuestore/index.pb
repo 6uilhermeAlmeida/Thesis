@@ -1,12 +1,12 @@
 
 ˆ
-Xcoroutineskit/src/main/java/com/example/coroutineskit/repository/CoroutinesRepository.kt,7/1/71c458aede85f7e7f724b63a4cfd21ca6b158128
+Xcoroutineskit/src/main/java/com/example/coroutineskit/repository/CoroutinesRepository.kt,7\1\71c458aede85f7e7f724b63a4cfd21ca6b158128
 †
-Vcoroutineskit/src/main/java/com/example/coroutineskit/viewmodel/CoroutinesViewModel.kt,f/d/fdcd07b9a46ee6253a7f60a1de70ada233add2b9
+Vcoroutineskit/src/main/java/com/example/coroutineskit/viewmodel/CoroutinesViewModel.kt,f\d\fdcd07b9a46ee6253a7f60a1de70ada233add2b9
 d
-4app/src/main/java/com/example/thesis/MainActivity.kt,6/2/62bb2cb709b26d41f83f72388f1ff542612496fa
+4app/src/main/java/com/example/thesis/MainActivity.kt,6\2\62bb2cb709b26d41f83f72388f1ff542612496fa
 |
-Lrxjavakit/src/main/java/com/example/rxjavakit/repository/RxJavaRepository.kt,0/6/06604f7eaf395d5c5ca714ff7bacce1b5630e7d1
+Lrxjavakit/src/main/java/com/example/rxjavakit/repository/RxJavaRepository.kt,0\6\06604f7eaf395d5c5ca714ff7bacce1b5630e7d1
 A
 gradle.properties,2\a\2afbb999f001938c88fa43fc2ef52abf0f8213e4
 X
@@ -16,15 +16,15 @@ Fapp/src/androidTest/java/com/example/thesis/ExampleInstrumentedTest.kt,e\8\e8f
 ?
 settings.gradle,0/5/05efc8b1657769a27696d478ded1e95f38737233
 z
-Jrxjavakit/src/main/java/com/example/rxjavakit/viewmodel/RxJavaViewModel.kt,6/9/69e1ab8f74143da06e00ff1400dfd7fa1c6c7b8b
+Jrxjavakit/src/main/java/com/example/rxjavakit/viewmodel/RxJavaViewModel.kt,6\9\69e1ab8f74143da06e00ff1400dfd7fa1c6c7b8b
 <
 build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
 @
 app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 |
-Lcoroutineskit/src/main/java/com/example/coroutineskit/rest/TMDBWebService.kt,7/b/7bd1df2ee6c0364c51b059fccf7921d9055a7f67
+Lcoroutineskit/src/main/java/com/example/coroutineskit/rest/TMDBWebService.kt,7\b\7bd1df2ee6c0364c51b059fccf7921d9055a7f67
 ~
-Nkitprotocol/src/main/java/com/example/kitprotocol/kitinterface/KitViewModel.kt,c/0/c057fdbb6aac23c69f193cd3c87620b0a512734a
+Nkitprotocol/src/main/java/com/example/kitprotocol/kitinterface/KitViewModel.kt,c\0\c057fdbb6aac23c69f193cd3c87620b0a512734a
 l
 <app/src/main/java/com/example/thesis/adapter/MovieAdapter.kt,4\9\49e91d5a504c64b3788b4f6cd1501d9d9e2ddc40
 o
@@ -46,9 +46,9 @@ V
 Y
 )app/src/main/res/layout/activity_main.xml,7\6\76b07e40f24cce093536731477540f12e7da3cb6
 V
-&app/src/main/res/layout/movie_item.xml,a/1/a1ceff8a3b67a540e62ce938c3549c4a5d93ae83
+&app/src/main/res/layout/movie_item.xml,a\1\a1ceff8a3b67a540e62ce938c3549c4a5d93ae83
 R
-"app/src/main/res/values/colors.xml,9/6/969faa2a5d9f5e8390e958d2c07f2cfd54676e6b
+"app/src/main/res/values/colors.xml,9\6\969faa2a5d9f5e8390e958d2c07f2cfd54676e6b
 V
 &app/src/main/res/values/font_certs.xml,8/7/8721b09acc6dcb831485a758e527a36efbbce1ff
 [
@@ -56,7 +56,7 @@ V
 R
 "app/src/main/res/values/styles.xml,f\7\f79cc2688e29fcbc286fda14ae07b27c9e83690f
 P
- app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 J
 coroutineskit/build.gradle,5\8\583629c701f794d8489a04718b556075ac1a1db8
 F
@@ -68,15 +68,15 @@ H
 t
 Dkitprotocol/src/main/java/com/example/kitprotocol/db/dao/MovieDao.kt,c\8\c82a45077cb83593c7066009a584f365fdd3a297
 t
-Drxjavakit/src/main/java/com/example/rxjavakit/rest/TMDBWebService.kt,a/5/a519fd45ed5762f06c9460af10f162b8d777be03
+Drxjavakit/src/main/java/com/example/rxjavakit/rest/TMDBWebService.kt,a\5\a519fd45ed5762f06c9460af10f162b8d777be03
 z
-Jkitprotocol/src/main/java/com/example/kitprotocol/db/entity/MovieEntity.kt,5/8/5858f759aa6cb78e54e2c51553a9d87d840167b4
+Jkitprotocol/src/main/java/com/example/kitprotocol/db/entity/MovieEntity.kt,5\8\5858f759aa6cb78e54e2c51553a9d87d840167b4
 ‡
-Wkitprotocol/src/main/java/com/example/kitprotocol/transformer/MovieDetailTransformer.kt,5/a/5a833c076f2cdfd7be8a558678841d520c6b4771
+Wkitprotocol/src/main/java/com/example/kitprotocol/transformer/MovieDetailTransformer.kt,5\a\5a833c076f2cdfd7be8a558678841d520c6b4771
 |
 Lkitprotocol/src/main/java/com/example/kitprotocol/rest/model/MovieDetails.kt,7/7/77b807bcba243636ab42e5319f512184fad695c6
 
-Okitprotocol/src/main/java/com/example/kitprotocol/kitinterface/KitRepository.kt,0/d/0d09c77218937441a77152ea273f63f29459d6e0
+Okitprotocol/src/main/java/com/example/kitprotocol/kitinterface/KitRepository.kt,0\d\0d09c77218937441a77152ea273f63f29459d6e0
 }
 Mrxjavakit/src/main/java/com/example/rxjavakit/extension/FlowableExtensions.kt,8/0/80b826e46b4a37b708e0cdb9f3bb89ba9aecf40c
 }
@@ -101,3 +101,7 @@ T
 $.idea/codeStyles/codeStyleConfig.xml,d\d\dd7b3350c29c49497756c7f32c69a3bed18b1cba
 X
 (.idea/dictionaries/Guilherme_Almeida.xml,9\6\96c078e70f0319c94260585fd175a06dce12e232
+S
+#app/src/main/res/values/strings.xml,d\2\d2281fbb3027de2722081a53408dd77628bf080e
+[
++kitprotocol/src/main/res/values/strings.xml,5\c\5c20f25e05f18a0a5c35913dc072fece4d97b76d
