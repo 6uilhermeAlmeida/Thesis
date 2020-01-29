@@ -47,7 +47,6 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
         locationServiceClient.requestLocationUpdates(locationRequest, callback, Looper.getMainLooper())
 
         emitter.setCancellable { locationServiceClient.removeLocationUpdates(callback) }
-
     }, BackpressureStrategy.LATEST)
 
 
@@ -71,11 +70,11 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
 
     override fun fetchTrendingMovies() {
 
-        val disposable = repository.fetchMovies()
+        val disposable = repository.fetchTrendingMovies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { isLoading.value = true }
-            .doOnComplete { isLoading.value = false }
+            .doOnTerminate { isLoading.value = false }
             .subscribe({
                 Log.d(LOG_TAG, "Fetched movies.")
             }, { throwable ->
@@ -90,25 +89,24 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
 
         locationDisposable?.dispose()
         locationDisposable = locationFlowable
-            .subscribeOn(Schedulers.io())
-            .map { location ->
+            .observeOn(Schedulers.io())
+            .flatMapCompletable { location ->
                 val addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
-                addresses.first().countryCode
+                val countryCode = addresses.first().countryCode
+                repository.fetchMoviesNowPlaying(countryCode).doOnComplete {
+                    isLoading.postValue(false)
+                    isLocalMovies.postValue(true)
+                }
             }
-            .flatMapCompletable { repository.fetchMoviesNowPlaying(it) }
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { isLoading.value = true }
-            .doOnError {
+            .subscribe({}, {
                 message.value = "Could not load local movies. Check your connection and GPS."
                 isLoading.value = false
                 cancelUpdateForLocalMovies()
-            }
-            .subscribe {
-                isLoading.value = false
-                isLocalMovies.value = true
-            }
+            })
 
-        locationDisposable?.let { disposableBag.add(it) }
+        disposableBag.add(locationDisposable!!)
     }
 
     override fun cancelUpdateForLocalMovies() {
@@ -122,3 +120,4 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
         super.onCleared()
     }
 }
+

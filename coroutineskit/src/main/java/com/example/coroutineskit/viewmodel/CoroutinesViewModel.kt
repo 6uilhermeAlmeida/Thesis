@@ -48,7 +48,6 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
 
             override fun onLocationAvailability(availability: LocationAvailability) {
                 Log.d(LOG_TAG, "Is the location available ? ${availability.isLocationAvailable}")
-                if (!availability.isLocationAvailable) close(IllegalStateException("No gps."))
             }
         }
 
