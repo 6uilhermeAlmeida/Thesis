@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), MovieProtocol {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        viewModel = ViewModelProviders.of(this)[RxJavaViewModel::class.java]
+        viewModel = ViewModelProviders.of(this)[CoroutinesViewModel::class.java]
 
         setupObservers()
         setupMovieList()
