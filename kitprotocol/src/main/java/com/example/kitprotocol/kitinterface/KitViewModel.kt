@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.kitprotocol.R
+import com.example.kitprotocol.throwable.LocationProviderNotAvailableException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -67,5 +68,16 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
 
     fun onLocationPermissionDeniedIndefinitely() {
         message.value = getApplication<Application>().getString(R.string.location_information_permission_denied)
+    }
+
+    protected fun handleLocalMoviesError(it: Throwable?) {
+        message.value = if (it is LocationProviderNotAvailableException) {
+            "It seems like your location provider is turned off."
+        } else {
+            "Could not load local movies. Check your connection."
+        }
+
+        isLoading.value = false
+        cancelUpdateForLocalMovies()
     }
 }

@@ -1,8 +1,6 @@
 package com.example.rxjavakit.viewmodel
 
 import android.app.Application
-import android.location.Location
-import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.kitprotocol.db.MovieDatabase
@@ -10,13 +8,9 @@ import com.example.kitprotocol.db.entity.MovieEntity
 import com.example.kitprotocol.kitinterface.KitViewModel
 import com.example.kitprotocol.kitinterface.MovieProtocol.Item
 import com.example.rxjavakit.extension.asLiveData
+import com.example.rxjavakit.location.getLocationFlowable
 import com.example.rxjavakit.repository.RxJavaRepository
 import com.example.rxjavakit.rest.MovieWebServiceRxJava
-import com.google.android.gms.location.LocationAvailability
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationResult
-import io.reactivex.BackpressureStrategy
-import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -30,25 +24,7 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
     )
 
     private val disposableBag = CompositeDisposable()
-
     private var locationDisposable: Disposable? = null
-    private val locationFlowable: Flowable<Location> = Flowable.create({ emitter ->
-
-        val callback = object : LocationCallback() {
-            override fun onLocationResult(result: LocationResult) {
-                emitter.onNext(result.locations[0])
-            }
-
-            override fun onLocationAvailability(availability: LocationAvailability) {
-                Log.d(LOG_TAG, "Is the location available ? ${availability.isLocationAvailable}")
-            }
-        }
-
-        locationServiceClient.requestLocationUpdates(locationRequest, callback, Looper.getMainLooper())
-
-        emitter.setCancellable { locationServiceClient.removeLocationUpdates(callback) }
-    }, BackpressureStrategy.LATEST)
-
 
     init {
         fetchTrendingMovies()
@@ -70,7 +46,7 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
 
     override fun fetchTrendingMovies() {
 
-        val disposable = repository.fetchTrendingMovies()
+        disposableBag += repository.fetchTrendingMovies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { isLoading.value = true }
@@ -81,14 +57,12 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
                 message.value = "Could not fetch movies."
                 Log.e(LOG_TAG, "Could not fetch movies", throwable)
             })
-
-        disposableBag.add(disposable)
     }
 
     override fun startUpdatesForLocalMovies() {
 
         locationDisposable?.dispose()
-        locationDisposable = locationFlowable
+        locationDisposable = getLocationFlowable(locationServiceClient, locationRequest)
             .observeOn(Schedulers.io())
             .flatMapCompletable { location ->
                 val addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
@@ -100,13 +74,10 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
             }
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { isLoading.value = true }
-            .subscribe({}, {
-                message.value = "Could not load local movies. Check your connection and GPS."
-                isLoading.value = false
-                cancelUpdateForLocalMovies()
-            })
-
-        disposableBag.add(locationDisposable!!)
+            .subscribe(
+                { Log.d(LOG_TAG, "Local movies fetch terminated.") },
+                { handleLocalMoviesError(it) })
+            .also { disposableBag += it }
     }
 
     override fun cancelUpdateForLocalMovies() {
@@ -119,5 +90,9 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
         disposableBag.dispose()
         super.onCleared()
     }
+}
+
+private operator fun CompositeDisposable.plusAssign(disposable: Disposable) {
+    this.add(disposable)
 }
 

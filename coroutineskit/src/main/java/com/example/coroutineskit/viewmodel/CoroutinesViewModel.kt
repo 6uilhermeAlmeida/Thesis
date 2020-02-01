@@ -1,27 +1,19 @@
 package com.example.coroutineskit.viewmodel
 
 import android.app.Application
-import android.location.Location
-import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.coroutineskit.location.getLocationFlow
 import com.example.coroutineskit.repository.CoroutinesRepository
 import com.example.coroutineskit.rest.MovieWebServiceCoroutines
 import com.example.kitprotocol.db.MovieDatabase
 import com.example.kitprotocol.db.entity.MovieEntity
-import com.example.kitprotocol.extension.suspend
 import com.example.kitprotocol.kitinterface.KitViewModel
 import com.example.kitprotocol.kitinterface.MovieProtocol.Item
-import com.google.android.gms.location.LocationAvailability
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
@@ -39,25 +31,6 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
     )
 
     private var locationJob: Job? = null
-    private val locationFlow: Flow<Location> = callbackFlow {
-
-        val callback = object : LocationCallback() {
-            override fun onLocationResult(result: LocationResult) {
-                offer(result.locations[0])
-            }
-
-            override fun onLocationAvailability(availability: LocationAvailability) {
-                Log.d(LOG_TAG, "Is the location available ? ${availability.isLocationAvailable}")
-            }
-        }
-
-        locationServiceClient.requestLocationUpdates(locationRequest, callback, Looper.getMainLooper()).suspend()
-
-        awaitClose {
-            locationServiceClient.removeLocationUpdates(callback)
-            Log.d(LOG_TAG, "Closing location API.")
-        }
-    }
 
     init {
         fetchTrendingMovies()
@@ -79,9 +52,7 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
 
 
     override fun fetchTrendingMovies() {
-
         viewModelScope.launch {
-
             isLoading.value = true
             try {
                 repository.fetchTrendingMovies()
@@ -94,9 +65,11 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
     }
 
     override fun startUpdatesForLocalMovies() {
+
         locationJob?.cancel()
         locationJob = viewModelScope.launch {
-            locationFlow
+
+            getLocationFlow(locationServiceClient, locationRequest)
                 .onEach { location ->
                     val addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
                     val countryCode = addresses.first().countryCode
@@ -104,11 +77,7 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
                 }
                 .flowOn(Dispatchers.IO)
                 .onStart { isLoading.value = true }
-                .catch {
-                    message.value = "Could not load local movies. Check your connection and GPS."
-                    isLoading.value = false
-                    cancelUpdateForLocalMovies()
-                }
+                .catch { handleLocalMoviesError(it) }
                 .collect {
                     isLoading.value = false
                     isLocalMovies.value = true
