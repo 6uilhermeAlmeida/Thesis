@@ -62,7 +62,7 @@ J
 F
 rxjavakit/build.gradle,0/d/0d5edd868f7794f2a19528af3b080080da0c0216
 w
-Gkitprotocol/src/main/java/com/example/kitprotocol/constant/Constants.kt,3/c/3c997f42261f559adf7b5f19f550129674700867
+Gkitprotocol/src/main/java/com/example/kitprotocol/constant/Constants.kt,3\c\3c997f42261f559adf7b5f19f550129674700867
 H
 kitprotocol/build.gradle,d/1/d14417fd46eb6ce0c118bd0552c67d2368c9471d
 t
@@ -78,7 +78,7 @@ Lkitprotocol/src/main/java/com/example/kitprotocol/rest/model/MovieDetails.kt,7
 
 Okitprotocol/src/main/java/com/example/kitprotocol/kitinterface/KitRepository.kt,0\d\0d09c77218937441a77152ea273f63f29459d6e0
 }
-Mrxjavakit/src/main/java/com/example/rxjavakit/extension/FlowableExtensions.kt,8/0/80b826e46b4a37b708e0cdb9f3bb89ba9aecf40c
+Mrxjavakit/src/main/java/com/example/rxjavakit/extension/FlowableExtensions.kt,8\0\80b826e46b4a37b708e0cdb9f3bb89ba9aecf40c
 }
 Mkitprotocol/src/main/java/com/example/kitprotocol/extension/TaskExtensions.kt,0/6/0677921b6e277a652df3e6efb3247d1e52e7d3b1
 z
@@ -105,3 +105,13 @@ S
 #app/src/main/res/values/strings.xml,d\2\d2281fbb3027de2722081a53408dd77628bf080e
 [
 +kitprotocol/src/main/res/values/strings.xml,5\c\5c20f25e05f18a0a5c35913dc072fece4d97b76d
+}
+Mkitprotocol/src/main/java/com/example/kitprotocol/rest/model/MovieResponse.kt,7\4\74e1fdf97548659f814e93486d906a3c32094da3
+u
+Ekitprotocol/src/main/java/com/example/kitprotocol/rest/model/Movie.kt,c\9\c986d9b3023ba0731206d53f2b5d15e40a57a748
+”
+dkitprotocol/src/main/java/com/example/kitprotocol/throwable/LocationProviderNotAvailableException.kt,e\4\e4ccd529ba85930e18353aca5a2bfbad6b6283da
+~
+Ncoroutineskit/src/main/java/com/example/coroutineskit/location/LocationFlow.kt,6\c\6c0b1f14c513886d829de2a9096944353ee79353
+z
+Jrxjavakit/src/main/java/com/example/rxjavakit/location/LocationFlowable.kt,1\a\1aef40559bb098d6a17ab55716290d9d9284c023

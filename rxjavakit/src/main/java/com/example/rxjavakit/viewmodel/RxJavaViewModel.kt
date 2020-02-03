@@ -8,6 +8,7 @@ import com.example.kitprotocol.db.entity.MovieEntity
 import com.example.kitprotocol.kitinterface.KitViewModel
 import com.example.kitprotocol.kitinterface.MovieProtocol.Item
 import com.example.rxjavakit.extension.asLiveData
+import com.example.rxjavakit.location.getAddressesSingle
 import com.example.rxjavakit.location.getLocationFlowable
 import com.example.rxjavakit.repository.RxJavaRepository
 import com.example.rxjavakit.rest.MovieWebServiceRxJava
@@ -64,8 +65,8 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
         locationDisposable?.dispose()
         locationDisposable = getLocationFlowable(locationServiceClient, locationRequest)
             .observeOn(Schedulers.io())
-            .flatMapCompletable { location ->
-                val addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
+            .flatMapSingle { location -> getAddressesSingle(addressRepository, location, 1) }
+            .flatMapCompletable { addresses ->
                 val countryCode = addresses.first().countryCode
                 repository.fetchMoviesNowPlaying(countryCode).doOnComplete {
                     isLoading.postValue(false)
@@ -82,8 +83,6 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
 
     override fun cancelUpdateForLocalMovies() {
         locationDisposable?.dispose()
-        isLocalMovies.value = false
-        fetchTrendingMovies()
     }
 
     override fun onCleared() {

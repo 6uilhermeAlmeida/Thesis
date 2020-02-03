@@ -1,19 +1,18 @@
 package com.example.coroutineskit.repository
 
-import android.util.Log
 import com.example.coroutineskit.rest.IMovieWebServiceCoroutines
 import com.example.kitprotocol.db.dao.MovieDao
 import com.example.kitprotocol.db.entity.MovieEntity
 import com.example.kitprotocol.kitinterface.KitRepository
-import com.example.kitprotocol.kitinterface.KitRepository.Companion.LOG_TAG
 import com.example.kitprotocol.rest.model.Movie
+import com.example.kitprotocol.rest.model.MovieDetails
 import com.example.kitprotocol.transformer.toEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import java.lang.IllegalStateException
 
 class CoroutinesRepository(
     private val remoteServiceCoroutines: IMovieWebServiceCoroutines,
@@ -27,33 +26,25 @@ class CoroutinesRepository(
 
         // Get trending movies
         val trendingMovies: List<Movie> = remoteServiceCoroutines.getTrendingMovies().results
-
-        // Get the details for trending movies in parallel
-        val detailedMovies = trendingMovies
-            .map { async { remoteServiceCoroutines.getMovieDetails(it.id) } }
-            .awaitAll()
-
-        // Insert in local database
-        detailedMovies.mapNotNull { it.toEntity() }.let {
-            movieDao.fresh(it)
-        }
+        val detailedMovies = getMoviesDetails(trendingMovies).awaitAll()
+        insertMoviesToDatabase(detailedMovies)
     }
 
     suspend fun fetchMoviesNowPlaying(countryCode: String) = coroutineScope {
 
-        val movies = remoteServiceCoroutines.getMoviesNowPlayingForRegion(countryCode).results
+        // Get now playing movies
+        val nowPlayingMovies = remoteServiceCoroutines.getMoviesNowPlayingForRegion(countryCode).results
+        val detailedMovies = getMoviesDetails(nowPlayingMovies).awaitAll()
+        insertMoviesToDatabase(detailedMovies)
+    }
 
-        Log.d(LOG_TAG, "Fetched ${movies.size} movies for $countryCode")
-
+    private fun CoroutineScope.getMoviesDetails(movieList: List<Movie>): List<Deferred<MovieDetails>> {
         // Get the details for trending movies in parallel
-        val detailedMovies = movies
-            .map { async { remoteServiceCoroutines.getMovieDetails(it.id) } }
-            .awaitAll()
+        return movieList.map { async { remoteServiceCoroutines.getMovieDetails(it.id) } }
+    }
 
+    private suspend fun insertMoviesToDatabase(detailedMovies: List<MovieDetails>) {
         // Insert in local database
-        detailedMovies.mapNotNull { it.toEntity() }.let {
-            movieDao.fresh(it)
-        }
-
+        detailedMovies.mapNotNull { it.toEntity() }.let { movieDao.fresh(it) }
     }
 }
