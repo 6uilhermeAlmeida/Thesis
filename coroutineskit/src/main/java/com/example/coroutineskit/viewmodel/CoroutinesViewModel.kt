@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.coroutineskit.location.getAddressesSuspending
 import com.example.coroutineskit.location.getLocationFlow
 import com.example.coroutineskit.repository.CoroutinesRepository
 import com.example.coroutineskit.rest.MovieWebServiceCoroutines
@@ -53,14 +54,15 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
 
     override fun fetchTrendingMovies() {
         viewModelScope.launch {
-            isLoading.value = true
             try {
+                isLoading.value = true
                 repository.fetchTrendingMovies()
             } catch (t: Throwable) {
                 message.value = "Could not fetch movies."
                 Log.e(LOG_TAG, "Could not fetch movies.", t)
+            } finally {
+                isLoading.value = false
             }
-            isLoading.value = false
         }
     }
 
@@ -71,7 +73,7 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
 
             getLocationFlow(locationServiceClient, locationRequest)
                 .onEach { location ->
-                    val addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
+                    val addresses = getAddressesSuspending(addressRepository, location, 1)
                     val countryCode = addresses.first().countryCode
                     repository.fetchMoviesNowPlaying(countryCode)
                 }
@@ -87,7 +89,5 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
 
     override fun cancelUpdateForLocalMovies() {
         locationJob?.cancel()
-        isLocalMovies.value = false
-        fetchTrendingMovies()
     }
 }
