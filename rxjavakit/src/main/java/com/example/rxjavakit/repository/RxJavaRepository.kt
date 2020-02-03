@@ -33,7 +33,7 @@ class RxJavaRepository(
             .flatMapCompletable { detailedMovies -> insertMoviesToDatabase(detailedMovies) }
     }
 
-    private fun insertMoviesToDatabase(detailedMovies: List<MovieDetails>): Completable? {
+    private fun insertMoviesToDatabase(detailedMovies: List<MovieDetails>): Completable {
         // Insert in local database
         return movieDao.nukeAsCompletable()
             .andThen(movieDao.insertAllAsCompletable(detailedMovies.mapNotNull { it.toEntity() }))
