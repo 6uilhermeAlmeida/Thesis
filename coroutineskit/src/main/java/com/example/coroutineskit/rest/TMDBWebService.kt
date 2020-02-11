@@ -9,7 +9,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface IMovieWebServiceCoroutines {
+interface IMovieServiceCoroutines {
 
     @GET("trending/movie/week")
     suspend fun getTrendingMovies(@Query("api_key") apiKey: String = Constants.TMDB_API_KEY): MovieResponse
@@ -31,12 +31,12 @@ interface IMovieWebServiceCoroutines {
 
 object MovieWebServiceCoroutines {
 
-    val service: IMovieWebServiceCoroutines by lazy {
+    val service: IMovieServiceCoroutines by lazy {
 
         Retrofit.Builder()
             .baseUrl(Constants.TMDB_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(IMovieWebServiceCoroutines::class.java)
+            .create(IMovieServiceCoroutines::class.java)
     }
 }

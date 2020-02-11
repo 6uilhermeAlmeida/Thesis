@@ -29,8 +29,6 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    protected abstract val repository: KitRepository
-
     protected val message by lazy { MutableLiveData<String?>() }
     protected val isLoading by lazy { MutableLiveData<Boolean>().apply { value = false } }
     protected val isLocalMovies by lazy { MutableLiveData<Boolean>().apply { value = false } }

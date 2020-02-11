@@ -19,7 +19,7 @@ import io.reactivex.schedulers.Schedulers
 
 class RxJavaViewModel(application: Application) : KitViewModel(application) {
 
-    override val repository: RxJavaRepository = RxJavaRepository(
+    private val repository: RxJavaRepository = RxJavaRepository(
         MovieWebServiceRxJava.service,
         MovieDatabase.getInstance(application.applicationContext).movieDao
     )
@@ -77,7 +77,8 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
             .doOnSubscribe { isLoading.value = true }
             .subscribe(
                 { Log.d(LOG_TAG, "Local movies fetch terminated.") },
-                { handleLocalMoviesError(it) })
+                { handleLocalMoviesError(it) }
+            )
             .also { disposableBag += it }
     }
 
@@ -85,13 +86,13 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
         locationDisposable?.dispose()
     }
 
+    private operator fun CompositeDisposable.plusAssign(disposable: Disposable) {
+        this.add(disposable)
+    }
+
     override fun onCleared() {
         disposableBag.dispose()
         super.onCleared()
     }
-}
-
-private operator fun CompositeDisposable.plusAssign(disposable: Disposable) {
-    this.add(disposable)
 }
 

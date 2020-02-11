@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 
 class CoroutinesViewModel(application: Application) : KitViewModel(application) {
 
-    override val repository: CoroutinesRepository = CoroutinesRepository(
+    private val repository: CoroutinesRepository = CoroutinesRepository(
         MovieWebServiceCoroutines.service,
         MovieDatabase.getInstance(application.applicationContext).movieDao
     )
