@@ -13,27 +13,50 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MovieDao {
 
+    /**
+     * Fetching movies.
+     */
+
     @Query("SELECT * FROM MovieEntity ORDER BY voteAverage DESC")
     fun allByFlow(): Flow<List<MovieEntity>>
 
     @Query("SELECT * FROM MovieEntity ORDER BY voteAverage DESC")
     fun allByFlowable(): Flowable<List<MovieEntity>>
 
-    @Transaction
-    suspend fun fresh(movieEntities: List<MovieEntity>) {
-        nuke()
-        insertAll(movieEntities)
-    }
+    /**
+     * Inserting movies.
+     */
 
+    // Suspending methods for Kotlin Coroutines
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(movieEntities: List<MovieEntity>)
+    suspend fun suspendInsert(movieEntities: List<MovieEntity>)
 
     @Query("DELETE FROM MovieEntity")
-    suspend fun nuke()
+    suspend fun suspendNuke()
 
+    @Transaction
+    suspend fun suspendNukeAndInsert(movieEntities: List<MovieEntity>) {
+        suspendNuke()
+        suspendInsert(movieEntities)
+    }
+
+    // Completable methods for RxJava (demo)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllAsCompletable(movieEntities: List<MovieEntity>) : Completable
+    fun insertAsCompletable(movieEntities: List<MovieEntity>) : Completable
 
     @Query("DELETE FROM MovieEntity")
     fun nukeAsCompletable() : Completable
+
+    // Regular functions
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(movieEntities: List<MovieEntity>)
+
+    @Query("DELETE FROM MovieEntity")
+    fun nuke()
+
+    @Transaction
+    fun nukeAndInsert(movieEntities: List<MovieEntity>) {
+        nuke()
+        insert(movieEntities)
+    }
 }

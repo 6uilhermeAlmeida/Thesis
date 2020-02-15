@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -41,13 +40,8 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
         .map { movies: List<MovieEntity> ->
 
             // Build a list according to our UI protocol
-            val list: MutableList<Item> = movies.map { Item.MovieItem(it) }.toMutableList()
-            list.add(Item.FooterItem("Thanks to TMDB API for the movie data."))
-
-            return@map list
+            return@map movies.map { Item.MovieItem(it) } + Item.FooterItem("Thanks to TMDB API for the movie data.")
         }
-        .catch { Log.e(LOG_TAG, "Error fetching movies.", it) }
-        .onCompletion { Log.d(LOG_TAG, "Flow completed.") }
         .flowOn(Dispatchers.IO)
         .asLiveData()
 
@@ -63,6 +57,7 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
             } finally {
                 isLoading.value = false
             }
+
         }
     }
 

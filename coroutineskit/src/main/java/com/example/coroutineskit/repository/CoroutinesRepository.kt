@@ -41,6 +41,7 @@ class CoroutinesRepository(private val remoteSource: IMovieServiceCoroutines, pr
 
     private suspend fun insertMoviesToDatabase(detailedMovies: List<MovieDetails>) {
         // Insert in local database
-        detailedMovies.mapNotNull { it.toEntity() }.let { localSource.fresh(it) }
+        val movieEntities = detailedMovies.mapNotNull { it.toEntity() }
+        localSource.suspendNukeAndInsert(movieEntities)
     }
 }

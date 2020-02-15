@@ -31,9 +31,8 @@ class RxJavaRepository(private val remoteSource: IMovieWebServiceRxJava, private
 
     private fun insertMoviesToDatabase(detailedMovies: List<MovieDetails>): Completable {
         // Insert in local database
-        return localSource.nukeAsCompletable()
-            .andThen(localSource.insertAllAsCompletable(detailedMovies.mapNotNull { it.toEntity() }))
-            .andThen(Completable.complete())
+        val movieEntities = detailedMovies.mapNotNull { it.toEntity() }
+        return Completable.fromAction { localSource.nukeAndInsert(movieEntities) }
     }
 
     private fun getMoviesDetail(movieList: List<Movie>): Single<List<MovieDetails>> {
