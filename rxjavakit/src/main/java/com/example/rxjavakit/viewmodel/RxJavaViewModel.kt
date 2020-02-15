@@ -35,13 +35,8 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
         .map { movies: List<MovieEntity> ->
 
             // Build a list according to our UI protocol
-            val list: MutableList<Item> = movies.map { Item.MovieItem(it) }.toMutableList()
-            list.add(Item.FooterItem("Thanks to TMDB API for the movie data."))
-
-            return@map list as List<Item>
+            return@map movies.map { Item.MovieItem(it) } + Item.FooterItem("Thanks to TMDB API for the movie data.")
         }
-        .doOnError { Log.e(LOG_TAG, "Error fetching movies.", it) }
-        .doOnComplete { Log.d(LOG_TAG, "Flowable completed.") }
         .subscribeOn(Schedulers.io())
         .asLiveData()
 
