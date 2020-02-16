@@ -26,6 +26,7 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
         LocationRequest().apply {
             interval = ONE_MINUTE
             fastestInterval = ONE_MINUTE
+
         }
     }
 

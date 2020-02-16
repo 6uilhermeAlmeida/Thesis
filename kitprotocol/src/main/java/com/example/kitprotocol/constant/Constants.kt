@@ -4,7 +4,7 @@ object Constants {
 
     // TMDB constants
     const val TMDB_API_KEY = "ff6e1ad273035da941466acbb0513c1b"
-    const val TMDB_BASE_URL = "http://api.themoviedb.org/3/"
+    const val TMDB_BASE_URL = "https://api.themoviedb.org/3/"
     const val SITE_YOUTUBE: String = "youtube"
     const val TYPE_TRAILER: String = "trailer"
 
