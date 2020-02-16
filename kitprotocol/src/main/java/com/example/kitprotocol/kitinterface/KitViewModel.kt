@@ -53,7 +53,6 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
             startUpdatesForLocalMovies()
         } else {
             cancelUpdateForLocalMovies()
-            isLocalMovies.value = false
             fetchTrendingMovies()
         }
     }
@@ -79,6 +78,7 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
         }
 
         isLoading.value = false
+        isLocalMovies.value = false
         cancelUpdateForLocalMovies()
         fetchTrendingMovies()
     }
