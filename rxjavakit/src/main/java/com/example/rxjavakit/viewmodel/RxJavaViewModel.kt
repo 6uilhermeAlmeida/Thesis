@@ -47,12 +47,13 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { isLoading.value = true }
             .doOnTerminate { isLoading.value = false }
-            .subscribe({
-                Log.d(LOG_TAG, "Fetched movies.")
-            }, { throwable ->
-                message.value = "Could not fetch movies."
-                Log.e(LOG_TAG, "Could not fetch movies", throwable)
-            })
+            .subscribe(
+                { isLocalMovies.value = false },
+                { throwable ->
+                    message.value = "Could not fetch movies."
+                    Log.e(LOG_TAG, "Could not fetch movies", throwable)
+                }
+            )
     }
 
     override fun startUpdatesForLocalMovies() {

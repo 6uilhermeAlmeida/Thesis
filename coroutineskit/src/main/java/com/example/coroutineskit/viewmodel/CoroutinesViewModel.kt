@@ -51,6 +51,7 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
             try {
                 isLoading.value = true
                 repository.fetchTrendingMovies()
+                isLocalMovies.value = false
             } catch (t: Throwable) {
                 message.value = "Could not fetch movies."
                 Log.e(LOG_TAG, "Could not fetch movies.", t)
