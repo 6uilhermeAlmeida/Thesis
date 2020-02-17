@@ -58,7 +58,6 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
             } finally {
                 isLoading.value = false
             }
-
         }
     }
 

@@ -60,6 +60,7 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
 
         locationDisposable?.dispose()
         locationDisposable = getLocationFlowable(locationServiceClient, locationRequest)
+            .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
             .flatMapSingle { location -> getAddressesSingle(addressRepository, location, 1) }
             .flatMapCompletable { addresses ->

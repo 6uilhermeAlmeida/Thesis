@@ -9,6 +9,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.conflate
 
 fun getLocationFlow(locationClient: FusedLocationProviderClient, locationRequest: LocationRequest) = callbackFlow {
 
@@ -38,4 +39,4 @@ fun getLocationFlow(locationClient: FusedLocationProviderClient, locationRequest
     locationClient.requestLocationUpdates(locationRequest, callback, Looper.getMainLooper())
 
     awaitClose { locationClient.removeLocationUpdates(callback) }
-}
+}.conflate()
