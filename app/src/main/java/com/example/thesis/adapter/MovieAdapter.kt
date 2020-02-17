@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kitprotocol.kitinterface.MovieProtocol
-import com.example.kitprotocol.kitinterface.MovieProtocol.Item.FooterItem
-import com.example.kitprotocol.kitinterface.MovieProtocol.Item.MovieItem
+import com.example.kitprotocol.protocol.MovieProtocol
+import com.example.kitprotocol.protocol.MovieProtocol.Item.FooterItem
+import com.example.kitprotocol.protocol.MovieProtocol.Item.MovieItem
 import com.example.thesis.R
 import com.example.thesis.adapter.diffutil.MovieItemDiffUtil
 import com.example.thesis.adapter.viewholder.FooterItemViewHolder

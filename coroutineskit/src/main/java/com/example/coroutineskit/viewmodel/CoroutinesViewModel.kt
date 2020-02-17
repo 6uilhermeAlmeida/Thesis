@@ -5,14 +5,15 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.coroutineskit.R
 import com.example.coroutineskit.location.getAddressesSuspending
 import com.example.coroutineskit.location.getLocationFlow
 import com.example.coroutineskit.repository.CoroutinesRepository
 import com.example.coroutineskit.rest.MovieWebServiceCoroutines
 import com.example.kitprotocol.db.MovieDatabase
 import com.example.kitprotocol.db.entity.MovieEntity
-import com.example.kitprotocol.kitinterface.KitViewModel
-import com.example.kitprotocol.kitinterface.MovieProtocol.Item
+import com.example.kitprotocol.protocol.KitViewModel
+import com.example.kitprotocol.protocol.MovieProtocol.Item
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
@@ -40,7 +41,7 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
         .map { movies: List<MovieEntity> ->
 
             // Build a list according to our UI protocol
-            return@map movies.map { Item.MovieItem(it) } + Item.FooterItem("Thanks to TMDB API for the movie data.")
+            return@map movies.map { Item.MovieItem(it) } + Item.FooterItem(context.getString(R.string.thanks_tmdb))
         }
         .flowOn(Dispatchers.IO)
         .asLiveData()
@@ -53,7 +54,7 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
                 repository.fetchTrendingMovies()
                 isLocalMovies.value = false
             } catch (t: Throwable) {
-                message.value = "Could not fetch movies."
+                message.value = context.getString(R.string.generic_movie_error)
                 Log.e(LOG_TAG, "Could not fetch movies.", t)
             } finally {
                 isLoading.value = false
@@ -62,10 +63,8 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
     }
 
     override fun startUpdatesForLocalMovies() {
-
         locationJob?.cancel()
         locationJob = viewModelScope.launch {
-
             getLocationFlow(locationServiceClient, locationRequest)
                 .onEach { location ->
                     val addresses = getAddressesSuspending(addressRepository, location, 1)

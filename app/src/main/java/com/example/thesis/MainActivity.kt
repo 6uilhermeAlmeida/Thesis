@@ -14,10 +14,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.coroutineskit.viewmodel.CoroutinesViewModel
 import com.example.kitprotocol.db.entity.MovieEntity
-import com.example.kitprotocol.kitinterface.KitViewModel
-import com.example.kitprotocol.kitinterface.MovieProtocol
+import com.example.kitprotocol.protocol.KitViewModel
+import com.example.kitprotocol.protocol.MovieProtocol
 import com.example.rxjavakit.viewmodel.RxJavaViewModel
 import com.example.thesis.adapter.MovieAdapter
 import com.example.thesis.command.OpenYoutubeCommand
@@ -41,7 +40,7 @@ class MainActivity : AppCompatActivity(), MovieProtocol {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        viewModel = ViewModelProviders.of(this)[CoroutinesViewModel::class.java]
+        viewModel = ViewModelProviders.of(this)[RxJavaViewModel::class.java]
 
         setupObservers()
         setupMovieList()

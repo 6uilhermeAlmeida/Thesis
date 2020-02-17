@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">KitProtocol</string>
     <string name="location_information_permission_denied">This feature requires location information. You can grant this permission in the app settings.</string>
+    <string name="generic_movie_error">Could not fetch movies.</string>
+    <string name="thanks_tmdb">Thanks to TMDB API for the movie data.</string>
+    <string name="location_provider_off">It seems like your location provider is turned off.</string>
+    <string name="generic_local_movies_error">Could not load local movies. Check your connection.</string>
 </resources>
