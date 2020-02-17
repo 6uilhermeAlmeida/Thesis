@@ -1,6 +1,7 @@
-package com.example.kitprotocol.kitinterface
+package com.example.kitprotocol.protocol
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,9 +27,11 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
         LocationRequest().apply {
             interval = ONE_MINUTE
             fastestInterval = ONE_MINUTE
-
         }
     }
+
+    protected val context: Context
+        get() = getApplication()
 
     protected val message by lazy { MutableLiveData<String?>() }
     protected val isLoading by lazy { MutableLiveData<Boolean>().apply { value = false } }
@@ -73,9 +76,9 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
     protected fun handleLocalMoviesError(it: Throwable?) {
 
         message.value = if (it is LocationProviderNotAvailableException) {
-            "It seems like your location provider is turned off."
+            context.getString(R.string.location_provider_off)
         } else {
-            "Could not load local movies. Check your connection."
+            context.getString(R.string.generic_local_movies_error)
         }
 
         isLoading.value = false

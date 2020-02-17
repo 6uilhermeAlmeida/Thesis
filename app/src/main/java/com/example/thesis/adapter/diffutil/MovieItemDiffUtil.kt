@@ -1,7 +1,7 @@
 package com.example.thesis.adapter.diffutil
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.kitprotocol.kitinterface.MovieProtocol.Item
+import com.example.kitprotocol.protocol.MovieProtocol.Item
 
 class MovieItemDiffUtil : DiffUtil.ItemCallback<Item>() {
 

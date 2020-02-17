@@ -5,7 +5,7 @@ import android.view.View
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kitprotocol.constant.Constants
-import com.example.kitprotocol.kitinterface.MovieProtocol
+import com.example.kitprotocol.protocol.MovieProtocol
 import com.example.thesis.R
 import com.example.thesis.extensions.load
 import kotlinx.android.synthetic.main.movie_item.view.button_play_trailer

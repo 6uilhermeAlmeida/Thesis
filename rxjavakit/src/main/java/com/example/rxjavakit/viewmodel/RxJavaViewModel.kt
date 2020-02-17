@@ -5,8 +5,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.kitprotocol.db.MovieDatabase
 import com.example.kitprotocol.db.entity.MovieEntity
-import com.example.kitprotocol.kitinterface.KitViewModel
-import com.example.kitprotocol.kitinterface.MovieProtocol.Item
+import com.example.kitprotocol.protocol.KitViewModel
+import com.example.kitprotocol.protocol.MovieProtocol.Item
+import com.example.rxjavakit.R
 import com.example.rxjavakit.extension.asLiveData
 import com.example.rxjavakit.location.getAddressesSingle
 import com.example.rxjavakit.location.getLocationFlowable
@@ -35,7 +36,7 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
         .map { movies: List<MovieEntity> ->
 
             // Build a list according to our UI protocol
-            return@map movies.map { Item.MovieItem(it) } + Item.FooterItem("Thanks to TMDB API for the movie data.")
+            return@map movies.map { Item.MovieItem(it) } + Item.FooterItem(context.getString(R.string.thanks_tmdb))
         }
         .subscribeOn(Schedulers.io())
         .asLiveData()
@@ -50,7 +51,7 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
             .subscribe(
                 { isLocalMovies.value = false },
                 { throwable ->
-                    message.value = "Could not fetch movies."
+                    message.value = context.getString(R.string.generic_movie_error)
                     Log.e(LOG_TAG, "Could not fetch movies", throwable)
                 }
             )
@@ -72,10 +73,7 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
             }
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { isLoading.value = true }
-            .subscribe(
-                { Log.d(LOG_TAG, "Local movies fetch terminated.") },
-                { handleLocalMoviesError(it) }
-            )
+            .subscribe({}, { handleLocalMoviesError(it) })
             .also { disposableBag += it }
     }
 

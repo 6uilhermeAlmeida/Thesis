@@ -1,4 +1,4 @@
-package com.example.kitprotocol.kitinterface
+package com.example.kitprotocol.protocol
 
 import android.view.View
 import com.example.kitprotocol.db.entity.MovieEntity
