@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kitprotocol.db.entity.MovieEntity
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), MovieProtocol {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        viewModel = ViewModelProviders.of(this)[RxJavaViewModel::class.java]
+        viewModel = ViewModelProvider(this)[RxJavaViewModel::class.java]
 
         setupObservers()
         setupMovieList()

@@ -11,7 +11,7 @@ import com.google.android.gms.location.LocationResult
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 
-fun getLocationFlowable(
+internal fun getLocationUpdates(
     locationServiceClient: FusedLocationProviderClient,
     locationRequest: LocationRequest
 ): Flowable<Location> = Flowable.create({ emitter ->

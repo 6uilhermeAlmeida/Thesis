@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.coroutineskit.R
-import com.example.coroutineskit.location.getAddressesSuspending
-import com.example.coroutineskit.location.getLocationFlow
+import com.example.coroutineskit.location.getAddresses
+import com.example.coroutineskit.location.getLocationUpdates
 import com.example.coroutineskit.repository.CoroutinesRepository
 import com.example.coroutineskit.rest.MovieWebServiceCoroutines
 import com.example.kitprotocol.db.MovieDatabase
@@ -65,9 +65,9 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
     override fun startUpdatesForLocalMovies() {
         locationJob?.cancel()
         locationJob = viewModelScope.launch {
-            getLocationFlow(locationServiceClient, locationRequest)
+            getLocationUpdates(locationServiceClient, locationRequest)
                 .onEach { location ->
-                    val addresses = getAddressesSuspending(addressRepository, location, 1)
+                    val addresses = getAddresses(addressRepository, location, 1)
                     val countryCode = addresses.first().countryCode
                     repository.fetchMoviesNowPlaying(countryCode)
                 }

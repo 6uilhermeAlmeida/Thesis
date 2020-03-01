@@ -9,8 +9,8 @@ import com.example.kitprotocol.protocol.KitViewModel
 import com.example.kitprotocol.protocol.MovieProtocol.Item
 import com.example.rxjavakit.R
 import com.example.rxjavakit.extension.asLiveData
-import com.example.rxjavakit.location.getAddressesSingle
-import com.example.rxjavakit.location.getLocationFlowable
+import com.example.rxjavakit.location.getAddresses
+import com.example.rxjavakit.location.getLocationUpdates
 import com.example.rxjavakit.repository.RxJavaRepository
 import com.example.rxjavakit.rest.MovieWebServiceRxJava
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -60,10 +60,10 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
     override fun startUpdatesForLocalMovies() {
 
         locationDisposable?.dispose()
-        locationDisposable = getLocationFlowable(locationServiceClient, locationRequest)
+        locationDisposable = getLocationUpdates(locationServiceClient, locationRequest)
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
-            .flatMapSingle { location -> getAddressesSingle(addressRepository, location, 1) }
+            .flatMapSingle { location -> getAddresses(addressRepository, location, 1) }
             .flatMapCompletable { addresses ->
                 val countryCode = addresses.first().countryCode
                 repository.fetchMoviesNowPlaying(countryCode).doOnComplete {
