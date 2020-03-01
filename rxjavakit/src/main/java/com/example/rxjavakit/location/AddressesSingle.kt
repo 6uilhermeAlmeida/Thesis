@@ -5,7 +5,7 @@ import android.location.Location
 import com.example.kitprotocol.location.AddressRepository
 import io.reactivex.Single
 
-fun getAddressesSingle(addressRepository: AddressRepository, location: Location, maxResults: Int) =
+internal fun getAddresses(addressRepository: AddressRepository, location: Location, maxResults: Int) =
     Single.create<List<Address>> { emitter ->
         addressRepository.getAddresses(location.longitude, location.latitude, maxResults) { addresses, throwable ->
             addresses?.let { emitter.onSuccess(it) }

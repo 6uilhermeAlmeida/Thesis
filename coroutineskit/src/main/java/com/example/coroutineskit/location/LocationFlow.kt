@@ -11,32 +11,33 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.conflate
 
-fun getLocationFlow(locationClient: FusedLocationProviderClient, locationRequest: LocationRequest) = callbackFlow {
+internal fun getLocationUpdates(locationClient: FusedLocationProviderClient, locationRequest: LocationRequest) =
+    callbackFlow {
 
-    var locationCheck = false
+        var locationCheck = false
 
-    val callback = object : LocationCallback() {
+        val callback = object : LocationCallback() {
 
-        override fun onLocationResult(result: LocationResult) {
+            override fun onLocationResult(result: LocationResult) {
 
-            // Emit the received location
-            offer(result.locations.first())
-        }
+                // Emit the received location
+                offer(result.locations.first())
+            }
 
-        override fun onLocationAvailability(availability: LocationAvailability) {
+            override fun onLocationAvailability(availability: LocationAvailability) {
 
-            // This callback will randomly receive a false signal, for the purpose we only need the initial signal.
-            // In case the location is not available when starting the search
-            // this will propagate a [LocationProviderNotAvailableException]
+                // This callback will randomly receive a false signal, for the purpose we only need the initial signal.
+                // In case the location is not available when starting the search
+                // this will propagate a [LocationProviderNotAvailableException]
 
-            if (!locationCheck) {
-                if (!availability.isLocationAvailable) close(LocationProviderNotAvailableException())
-                locationCheck = true
+                if (!locationCheck) {
+                    if (!availability.isLocationAvailable) close(LocationProviderNotAvailableException())
+                    locationCheck = true
+                }
             }
         }
-    }
 
-    locationClient.requestLocationUpdates(locationRequest, callback, Looper.getMainLooper())
+        locationClient.requestLocationUpdates(locationRequest, callback, Looper.getMainLooper())
 
-    awaitClose { locationClient.removeLocationUpdates(callback) }
-}.conflate()
+        awaitClose { locationClient.removeLocationUpdates(callback) }
+    }.conflate()
