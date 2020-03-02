@@ -3,9 +3,9 @@ package com.example.coroutineskit.repository
 import com.example.coroutineskit.rest.IMovieServiceCoroutines
 import com.example.kitprotocol.db.dao.MovieDao
 import com.example.kitprotocol.db.entity.MovieEntity
-import com.example.kitprotocol.rest.model.Movie
 import com.example.kitprotocol.rest.model.MovieDetails
-import com.example.kitprotocol.transformer.toEntity
+import com.example.kitprotocol.rest.model.idList
+import com.example.kitprotocol.transformer.toEntityList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -21,27 +21,26 @@ class CoroutinesRepository(private val remoteSource: IMovieServiceCoroutines, pr
     suspend fun fetchTrendingMovies() = coroutineScope {
 
         // Get trending movies
-        val trendingMovies: List<Movie> = remoteSource.getTrendingMovies().results
+        val trendingMovies = remoteSource.getTrendingMovies().results.idList()
         val detailedMovies = getMoviesDetails(trendingMovies).awaitAll()
-        insertMoviesToDatabase(detailedMovies)
+        insertMoviesToDatabase(detailedMovies.toEntityList())
     }
 
     suspend fun fetchMoviesNowPlaying(countryCode: String) = coroutineScope {
 
         // Get now playing movies
-        val nowPlayingMovies = remoteSource.getMoviesNowPlayingForRegion(countryCode).results
+        val nowPlayingMovies = remoteSource.getMoviesNowPlayingForRegion(countryCode).results.idList()
         val detailedMovies = getMoviesDetails(nowPlayingMovies).awaitAll()
-        insertMoviesToDatabase(detailedMovies)
+        insertMoviesToDatabase(detailedMovies.toEntityList())
     }
 
-    private fun CoroutineScope.getMoviesDetails(movieList: List<Movie>): List<Deferred<MovieDetails>> {
+    fun CoroutineScope.getMoviesDetails(moviesIds: List<Int>): List<Deferred<MovieDetails>> {
         // Get the details for trending movies in parallel
-        return movieList.map { async { remoteSource.getMovieDetails(it.id) } }
+        return moviesIds.map { async { remoteSource.getMovieDetails(it) } }
     }
 
-    private suspend fun insertMoviesToDatabase(detailedMovies: List<MovieDetails>) {
+    suspend fun insertMoviesToDatabase(movieEntities: List<MovieEntity>) {
         // Insert in local database
-        val movieEntities = detailedMovies.mapNotNull { it.toEntity() }
         localSource.suspendNukeAndInsert(movieEntities)
     }
 }

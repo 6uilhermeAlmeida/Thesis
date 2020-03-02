@@ -31,12 +31,11 @@ interface IMovieServiceCoroutines {
 
 object MovieWebServiceCoroutines {
 
-    val service: IMovieServiceCoroutines by lazy {
+    val builder: Retrofit.Builder = Retrofit.Builder()
+        .baseUrl(Constants.TMDB_BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
 
-        Retrofit.Builder()
-            .baseUrl(Constants.TMDB_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(IMovieServiceCoroutines::class.java)
+    val service: IMovieServiceCoroutines by lazy {
+        builder.build().create(IMovieServiceCoroutines::class.java)
     }
 }
