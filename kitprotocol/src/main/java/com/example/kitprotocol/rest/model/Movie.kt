@@ -35,3 +35,5 @@ data class Movie(
     @SerializedName("vote_count")
     val voteCount: Int?
 )
+
+fun List<Movie>.idList() = map { it.id }

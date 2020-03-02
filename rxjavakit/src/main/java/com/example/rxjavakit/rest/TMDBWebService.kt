@@ -32,13 +32,12 @@ interface IMovieWebServiceRxJava {
 
 object MovieWebServiceRxJava {
 
-    val service: IMovieWebServiceRxJava by lazy {
+    val builder: Retrofit.Builder = Retrofit.Builder()
+        .baseUrl(Constants.TMDB_BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 
-        Retrofit.Builder()
-            .baseUrl(Constants.TMDB_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build()
-            .create(IMovieWebServiceRxJava::class.java)
+    val service: IMovieWebServiceRxJava by lazy {
+        builder.build().create(IMovieWebServiceRxJava::class.java)
     }
 }

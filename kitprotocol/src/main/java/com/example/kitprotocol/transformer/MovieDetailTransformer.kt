@@ -24,3 +24,5 @@ fun MovieDetails.toEntity(): MovieEntity? {
         if (it == null) Log.d("MovieDetailTransformer", "Error during transform", result.exceptionOrNull())
     }
 }
+
+fun List<MovieDetails>.toEntityList(): List<MovieEntity> = mapNotNull { it.toEntity() }

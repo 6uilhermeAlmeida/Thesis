@@ -1,2 +1,3 @@
 include ':app', ':coroutineskit', ':rxjavakit', ':kitprotocol'
 rootProject.name='Thesis'
+include ':benchmark'
