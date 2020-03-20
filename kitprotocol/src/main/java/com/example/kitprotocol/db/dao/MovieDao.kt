@@ -8,6 +8,7 @@ import androidx.room.Transaction
 import com.example.kitprotocol.db.entity.MovieEntity
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -21,7 +22,13 @@ interface MovieDao {
     fun allByFlow(): Flow<List<MovieEntity>>
 
     @Query("SELECT * FROM MovieEntity ORDER BY voteAverage DESC")
+    suspend fun allSuspending(): List<MovieEntity>
+
+    @Query("SELECT * FROM MovieEntity ORDER BY voteAverage DESC")
     fun allByFlowable(): Flowable<List<MovieEntity>>
+
+    @Query("SELECT * FROM MovieEntity ORDER BY voteAverage DESC")
+    fun allBySingle(): Single<List<MovieEntity>>
 
     /**
      * Inserting movies.

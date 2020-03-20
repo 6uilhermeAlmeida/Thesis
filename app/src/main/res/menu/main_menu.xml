@@ -5,6 +5,12 @@
     <item
         android:id="@+id/local_movies"
         android:icon="@drawable/ic_local_play_black_24dp"
-        android:title="Playing in the region"
-        app:showAsAction="always" />
+        android:title="@string/playing_in_the_region"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/garbage_collector"
+        android:icon="@drawable/ic_local_shipping_black_24dp"
+        android:title="@string/garbage_collector"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
 </menu>
