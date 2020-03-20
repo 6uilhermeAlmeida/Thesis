@@ -24,10 +24,10 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
-class CoroutinesViewModel(application: Application) : KitViewModel(application) {
+class CoroutinesViewModel(application: Application, mock: Boolean) : KitViewModel(application) {
 
     private val repository: CoroutinesRepository = CoroutinesRepository(
-        MovieWebServiceCoroutines.service,
+        if (mock) MovieWebServiceCoroutines.mock() else MovieWebServiceCoroutines.service,
         MovieDatabase.getInstance(application.applicationContext).movieDao
     )
 
@@ -48,6 +48,7 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
 
 
     override fun fetchTrendingMovies() {
+        startTrendingMoviesTimer()
         viewModelScope.launch {
             try {
                 isLoading.value = true
@@ -57,12 +58,14 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
                 message.value = context.getString(R.string.generic_movie_error)
                 Log.e(LOG_TAG, "Could not fetch movies.", t)
             } finally {
+                stopTrendingMoviesTimer()
                 isLoading.value = false
             }
         }
     }
 
     override fun startUpdatesForLocalMovies() {
+        startLocalMoviesTimer()
         locationJob?.cancel()
         locationJob = viewModelScope.launch {
             getLocationUpdates(locationServiceClient, locationRequest)
@@ -75,6 +78,7 @@ class CoroutinesViewModel(application: Application) : KitViewModel(application) 
                 .onStart { isLoading.value = true }
                 .catch { handleLocalMoviesError(it) }
                 .collect {
+                    stopLocalMoviesTimer()
                     isLoading.value = false
                     isLocalMovies.value = true
                 }

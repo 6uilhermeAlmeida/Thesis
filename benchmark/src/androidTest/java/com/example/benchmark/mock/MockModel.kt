@@ -1,4 +1,4 @@
-package mock.services
+package com.example.benchmark.mock
 
 import com.example.kitprotocol.db.entity.MovieEntity
 

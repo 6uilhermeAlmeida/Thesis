@@ -11,15 +11,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kitprotocol.db.entity.MovieEntity
 import com.example.kitprotocol.protocol.KitViewModel
 import com.example.kitprotocol.protocol.MovieProtocol
-import com.example.rxjavakit.viewmodel.RxJavaViewModel
 import com.example.thesis.adapter.MovieAdapter
 import com.example.thesis.command.OpenYoutubeCommand
+import com.example.thesis.config.MainConfig
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_main.recyclerView_main
 import kotlinx.android.synthetic.main.activity_main.swipe_refresh_layout
@@ -40,7 +39,7 @@ class MainActivity : AppCompatActivity(), MovieProtocol {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        viewModel = ViewModelProvider(this)[RxJavaViewModel::class.java]
+        viewModel = MainConfig.getViewModel(this, application)
 
         setupObservers()
         setupMovieList()
@@ -49,17 +48,28 @@ class MainActivity : AppCompatActivity(), MovieProtocol {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
+        val gcItem = menu?.getItem(1)?.apply { isVisible = false }
+        toolbar.setOnLongClickListener {
+            gcItem?.apply { isVisible = !isVisible }
+            return@setOnLongClickListener true
+        }
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+
             R.id.local_movies -> {
                 if (isLocationPermissionGranted()) {
                     viewModel.onLocalMoviesClick()
                 } else {
                     requestPermissions(arrayOf(LOCATION_PERMISSION), LOCATION_PERMISSION_REQ_CODE)
                 }
+                true
+            }
+
+            R.id.garbage_collector -> {
+                System.gc()
                 true
             }
 

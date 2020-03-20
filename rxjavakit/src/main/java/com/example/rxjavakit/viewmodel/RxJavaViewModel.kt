@@ -18,10 +18,10 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class RxJavaViewModel(application: Application) : KitViewModel(application) {
+class RxJavaViewModel(application: Application, mock: Boolean) : KitViewModel(application) {
 
     private val repository: RxJavaRepository = RxJavaRepository(
-        MovieWebServiceRxJava.service,
+        if (mock) MovieWebServiceRxJava.mock() else MovieWebServiceRxJava.service,
         MovieDatabase.getInstance(application.applicationContext).movieDao
     )
 
@@ -42,12 +42,15 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
         .asLiveData()
 
     override fun fetchTrendingMovies() {
-
+        startTrendingMoviesTimer()
         disposableBag += repository.fetchTrendingMovies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { isLoading.value = true }
-            .doOnTerminate { isLoading.value = false }
+            .doFinally {
+                stopTrendingMoviesTimer()
+                isLoading.value = false
+            }
             .subscribe(
                 { isLocalMovies.value = false },
                 { throwable ->
@@ -58,7 +61,7 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
     }
 
     override fun startUpdatesForLocalMovies() {
-
+        startLocalMoviesTimer()
         locationDisposable?.dispose()
         locationDisposable = getLocationUpdates(locationServiceClient, locationRequest)
             .subscribeOn(Schedulers.io())
@@ -67,6 +70,7 @@ class RxJavaViewModel(application: Application) : KitViewModel(application) {
             .flatMapCompletable { addresses ->
                 val countryCode = addresses.first().countryCode
                 repository.fetchMoviesNowPlaying(countryCode).doOnComplete {
+                    stopLocalMoviesTimer()
                     isLoading.postValue(false)
                     isLocalMovies.postValue(true)
                 }
