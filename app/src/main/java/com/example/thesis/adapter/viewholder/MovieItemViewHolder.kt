@@ -4,7 +4,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.view.View
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kitprotocol.constant.Constants
+import com.example.kitprotocol.constant.TMDBConstants
 import com.example.kitprotocol.protocol.MovieProtocol
 import com.example.thesis.R
 import com.example.thesis.extensions.load
@@ -49,8 +49,8 @@ class MovieItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view
             button_play_trailer.visibility = View.GONE
         }
 
-        imageView_backdrop.load(Constants.getImageUrl(movie.backdropPath))
-        imageView_poster.load(Constants.getImageUrl(movie.posterPath), { drawable ->
+        imageView_backdrop.load(TMDBConstants.getImageUrl(movie.backdropPath))
+        imageView_poster.load(TMDBConstants.getImageUrl(movie.posterPath), { drawable ->
             val bitmap = (drawable as? BitmapDrawable)?.bitmap ?: return@load
             Palette.from(bitmap).generate { palette ->
                 val swatch = palette?.darkMutedSwatch ?: palette?.darkVibrantSwatch

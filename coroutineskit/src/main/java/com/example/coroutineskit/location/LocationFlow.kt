@@ -1,5 +1,6 @@
 package com.example.coroutineskit.location
 
+import android.location.Location
 import android.os.Looper
 import com.example.kitprotocol.throwable.LocationProviderNotAvailableException
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.conflate
 
 internal fun getLocationUpdates(locationClient: FusedLocationProviderClient, locationRequest: LocationRequest) =
-    callbackFlow {
+    callbackFlow<Location> {
 
         var locationCheck = false
 
