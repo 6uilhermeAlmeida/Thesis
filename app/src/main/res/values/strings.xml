@@ -2,4 +2,6 @@
     <string name="app_name">Thesis</string>
     <string name="runtime">%1$dM</string>
     <string name="play_trailer">Play trailer</string>
+    <string name="garbage_collector">Garbage collector</string>
+    <string name="playing_in_the_region">Playing in the region</string>
 </resources>

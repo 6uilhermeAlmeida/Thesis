@@ -1,7 +1,7 @@
 package com.example.kitprotocol.rest.model
 
 
-import com.example.kitprotocol.constant.Constants
+import com.example.kitprotocol.constant.TMDBConstants
 import com.google.gson.annotations.SerializedName
 import java.util.Locale
 
@@ -18,5 +18,5 @@ data class Result(
     val type: String?
 ) {
     fun isTrailerFromYoutube() =
-        site?.toLowerCase(Locale.getDefault()) == Constants.SITE_YOUTUBE && type?.toLowerCase(Locale.getDefault()) == Constants.TYPE_TRAILER
+        site?.toLowerCase(Locale.getDefault()) == TMDBConstants.SITE_YOUTUBE && type?.toLowerCase(Locale.getDefault()) == TMDBConstants.TYPE_TRAILER
 }

@@ -1,6 +1,6 @@
 package com.example.kitprotocol.constant
 
-object Constants {
+object TMDBConstants {
 
     // TMDB constants
     const val TMDB_API_KEY = "ff6e1ad273035da941466acbb0513c1b"
@@ -10,8 +10,4 @@ object Constants {
 
     val APPEND_TO_RESPONSE = listOf("videos")
     fun getImageUrl(specific: String?) = "https://image.tmdb.org/t/p/w500$specific"
-
-    // Firebase
-    const val REFRESH_EVENT_KEY = "refresh_movies"
-
 }
