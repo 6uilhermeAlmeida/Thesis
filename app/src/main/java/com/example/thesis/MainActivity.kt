@@ -69,6 +69,7 @@ class MainActivity : AppCompatActivity(), MovieProtocol {
             }
 
             R.id.garbage_collector -> {
+                Runtime.getRuntime().gc()
                 System.gc()
                 true
             }

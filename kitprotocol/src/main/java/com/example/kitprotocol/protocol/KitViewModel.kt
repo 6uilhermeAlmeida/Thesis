@@ -14,7 +14,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 
-abstract class KitViewModel(application: Application) : AndroidViewModel(application), MovieTimer {
+abstract class KitViewModel(application: Application, mock: Boolean) : AndroidViewModel(application), MovieTimer {
 
     companion object {
         const val LOG_TAG = "ViewModel"
@@ -43,7 +43,7 @@ abstract class KitViewModel(application: Application) : AndroidViewModel(applica
     protected val message by lazy { MutableLiveData<String?>() }
     protected val isLoading by lazy { MutableLiveData<Boolean>().apply { value = false } }
     protected val isLocalMovies by lazy { MutableLiveData<Boolean>().apply { value = false } }
-    protected val addressRepository by lazy { AddressRepository(application) }
+    protected val addressRepository by lazy { AddressRepository(application, mock) }
 
     fun getMessage(): LiveData<String?> = message
     fun getIsLoading(): LiveData<Boolean> = isLoading
