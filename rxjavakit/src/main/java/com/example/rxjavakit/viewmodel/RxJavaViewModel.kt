@@ -18,7 +18,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class RxJavaViewModel(application: Application, mock: Boolean) : KitViewModel(application) {
+class RxJavaViewModel(application: Application, mock: Boolean) : KitViewModel(application, mock) {
 
     private val repository: RxJavaRepository = RxJavaRepository(
         if (mock) MovieWebServiceRxJava.mock() else MovieWebServiceRxJava.service,

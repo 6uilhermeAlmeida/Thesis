@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
-class CoroutinesViewModel(application: Application, mock: Boolean) : KitViewModel(application) {
+class CoroutinesViewModel(application: Application, mock: Boolean) : KitViewModel(application, mock) {
 
     private val repository: CoroutinesRepository = CoroutinesRepository(
         if (mock) MovieWebServiceCoroutines.mock() else MovieWebServiceCoroutines.service,
