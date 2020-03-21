@@ -3,8 +3,9 @@ package com.example.kitprotocol.location
 import android.content.Context
 import android.location.Address
 import android.location.Geocoder
+import java.util.Locale
 
-class AddressRepository(context: Context) {
+class AddressRepository(context: Context, val mock: Boolean) {
 
     private val geoCoder = Geocoder(context)
 
@@ -15,8 +16,8 @@ class AddressRepository(context: Context) {
         block: (List<Address>?, Throwable?) -> Unit
     ) {
         try {
-            val addresses = geoCoder.getFromLocation(latitude, longitude, maxResults)
-            block(addresses, null)
+            val mockAddress = Address(Locale.US).apply { countryCode = "US" }
+            block(if (mock) listOf(mockAddress) else geoCoder.getFromLocation(latitude, longitude, maxResults), null)
         } catch (t: Throwable) {
             block(null, t)
         }
