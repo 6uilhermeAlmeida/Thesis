@@ -63,25 +63,31 @@ dependencies {
 }
 
 task rxJavaDatabaseBenchmark(type: Exec) {
+    dependsOn ':benchmark:assembleDebug', ':benchmark:assembleDebugAndroidTest'
     commandLine './rxJavaDatabaseBenchmark.sh'
 }
 
 task rxJavaNetworkBenchmark(type: Exec) {
+    dependsOn ':benchmark:assembleDebug', ':benchmark:assembleDebugAndroidTest'
     commandLine './rxJavaNetworkBenchmark.sh'
 }
 
 task rxJavaIntegrationBenchmark(type: Exec) {
+    dependsOn ':benchmark:assembleDebug', ':benchmark:assembleDebugAndroidTest'
     commandLine './rxJavaIntegrationBenchmark.sh'
 }
 
 task coroutinesDatabaseBenchmark(type: Exec) {
+    dependsOn ':benchmark:assembleDebug', ':benchmark:assembleDebugAndroidTest'
     commandLine './coroutinesDatabaseBenchmark.sh'
 }
 
 task coroutinesNetworkBenchmark(type: Exec) {
+    dependsOn ':benchmark:assembleDebug', ':benchmark:assembleDebugAndroidTest'
     commandLine './coroutinesNetworkBenchmark.sh'
 }
 
 task coroutinesIntegrationBenchmark(type: Exec) {
+    dependsOn ':benchmark:assembleDebug', ':benchmark:assembleDebugAndroidTest'
     commandLine './coroutinesIntegrationBenchmark.sh'
 }
