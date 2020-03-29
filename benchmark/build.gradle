@@ -61,3 +61,27 @@ dependencies {
     implementation project(path: ':coroutineskit')
     implementation project(path: ':rxjavakit')
 }
+
+task rxJavaDatabaseBenchmark(type: Exec) {
+    commandLine './rxJavaDatabaseBenchmark.sh'
+}
+
+task rxJavaNetworkBenchmark(type: Exec) {
+    commandLine './rxJavaNetworkBenchmark.sh'
+}
+
+task rxJavaIntegrationBenchmark(type: Exec) {
+    commandLine './rxJavaIntegrationBenchmark.sh'
+}
+
+task coroutinesDatabaseBenchmark(type: Exec) {
+    commandLine './coroutinesDatabaseBenchmark.sh'
+}
+
+task coroutinesNetworkBenchmark(type: Exec) {
+    commandLine './coroutinesNetworkBenchmark.sh'
+}
+
+task coroutinesIntegrationBenchmark(type: Exec) {
+    commandLine './coroutinesIntegrationBenchmark.sh'
+}
