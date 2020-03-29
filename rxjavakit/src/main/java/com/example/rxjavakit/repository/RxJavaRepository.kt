@@ -9,6 +9,7 @@ import com.example.rxjavakit.rest.IMovieWebServiceRxJava
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 
 class RxJavaRepository(private val remoteSource: IMovieWebServiceRxJava, private val localSource: MovieDao) {
 
@@ -31,7 +32,7 @@ class RxJavaRepository(private val remoteSource: IMovieWebServiceRxJava, private
 
     fun getMoviesDetail(moviesIds: List<Int>): Single<List<MovieDetails>> {
         // Get the details for trending movies in parallel
-        val singlesToZip = moviesIds.map { remoteSource.getMovieDetails(it) }
+        val singlesToZip = moviesIds.map { remoteSource.getMovieDetails(it).subscribeOn(Schedulers.io()) }
         return Single.zip(singlesToZip) { it.toList() as List<MovieDetails> }
     }
 

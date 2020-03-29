@@ -17,6 +17,15 @@ class CoroutinesNetworkBenchmark : CoroutinesBenchmark() {
     }
 
     @Test
+    fun fetch_movies_three_sequential_requests() = benchmarkRule.measureRepeated {
+        runBlocking {
+            remoteSource.getTrendingMovies()
+            remoteSource.getTrendingMovies()
+            remoteSource.getTrendingMovies()
+        }
+    }
+
+    @Test
     fun fetch_two_movie_details() = benchmarkRule.measureRepeated {
         val moviesIds = List(2) { 1 }
         runBlocking { with(repository) { getMoviesDetails(moviesIds).awaitAll() } }

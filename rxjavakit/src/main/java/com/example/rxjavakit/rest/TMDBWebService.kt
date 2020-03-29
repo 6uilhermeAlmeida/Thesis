@@ -36,7 +36,7 @@ object MovieWebServiceRxJava {
     private val builder: Retrofit.Builder = Retrofit.Builder()
         .baseUrl(TMDBConstants.TMDB_BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
 
     val service: IMovieWebServiceRxJava by lazy {
         builder.client(MovieHttpClient.get()).build().create(IMovieWebServiceRxJava::class.java)

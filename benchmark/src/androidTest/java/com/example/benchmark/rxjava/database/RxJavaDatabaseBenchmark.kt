@@ -5,6 +5,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.benchmark.mock.getMockEntity
 import com.example.benchmark.rxjava.RxJavaBenchmark
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -84,7 +85,7 @@ class RxJavaDatabaseBenchmark : RxJavaBenchmark() {
 
         runWithTimingDisabled { clearAndInsertMovies(20) }
 
-        val singlesToZip = List(20) { localSource.allBySingle() }
+        val singlesToZip = List(20) { localSource.allBySingle().subscribeOn(Schedulers.io()) }
         Single.zip(singlesToZip) { it.toList() }.blockingGet()
     }
 
