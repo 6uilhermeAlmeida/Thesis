@@ -22,7 +22,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner 'androidx.benchmark.junit4.AndroidBenchmarkRunner'
-        testInstrumentationRunnerArgument 'androidx.benchmark.suppressErrors', 'EMULATOR,LOW_BATTERY'
     }
 
     testBuildType = "debug"
@@ -63,31 +62,31 @@ dependencies {
 }
 
 task rxJavaDatabaseBenchmark(type: Exec) {
-    dependsOn ':benchmark:assembleDebug', ':benchmark:assembleDebugAndroidTest'
+    dependsOn ':benchmark:installDebugAndroidTest'
     commandLine './rxJavaDatabaseBenchmark.sh'
 }
 
 task rxJavaNetworkBenchmark(type: Exec) {
-    dependsOn ':benchmark:assembleDebug', ':benchmark:assembleDebugAndroidTest'
+    dependsOn ':benchmark:installDebugAndroidTest'
     commandLine './rxJavaNetworkBenchmark.sh'
 }
 
 task rxJavaIntegrationBenchmark(type: Exec) {
-    dependsOn ':benchmark:assembleDebug', ':benchmark:assembleDebugAndroidTest'
+    dependsOn ':benchmark:installDebugAndroidTest'
     commandLine './rxJavaIntegrationBenchmark.sh'
 }
 
 task coroutinesDatabaseBenchmark(type: Exec) {
-    dependsOn ':benchmark:assembleDebug', ':benchmark:assembleDebugAndroidTest'
+    dependsOn ':benchmark:installDebugAndroidTest'
     commandLine './coroutinesDatabaseBenchmark.sh'
 }
 
 task coroutinesNetworkBenchmark(type: Exec) {
-    dependsOn ':benchmark:assembleDebug', ':benchmark:assembleDebugAndroidTest'
+    dependsOn ':benchmark:installDebugAndroidTest'
     commandLine './coroutinesNetworkBenchmark.sh'
 }
 
 task coroutinesIntegrationBenchmark(type: Exec) {
-    dependsOn ':benchmark:assembleDebug', ':benchmark:assembleDebugAndroidTest'
+    dependsOn ':benchmark:installDebugAndroidTest'
     commandLine './coroutinesIntegrationBenchmark.sh'
 }
