@@ -46,4 +46,23 @@ class RxJavaIntegrationBenchmark : RxJavaBenchmark() {
                     .andThen(Completable.complete())
             }.blockingAwait()
     }
+
+    @Test
+    fun integration_4() = benchmarkRule.measureRepeated {
+        remoteSource.getTrendingMovies()
+            .flatMap { remoteSource.getTrendingMovies() }
+            .flatMap { remoteSource.getTrendingMovies() }
+            .flatMap { remoteSource.getTrendingMovies() }
+            .flatMap { repository.getMoviesDetail(List(20) { it }) }
+            .flatMap { repository.getMoviesDetail(List(20) { it }) }
+            .flatMap { repository.getMoviesDetail(List(20) { it }) }
+            .flatMap { repository.getMoviesDetail(List(20) { it }) }
+            .flatMapCompletable {
+                repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() })
+                    .andThen(repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() }))
+                    .andThen(repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() }))
+                    .andThen(repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() }))
+                    .andThen(Completable.complete())
+            }.blockingAwait()
+    }
 }

@@ -59,4 +59,28 @@ class CoroutinesIntegrationBenchmark : CoroutinesBenchmark() {
             repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
         }
     }
+
+    @Test
+    fun integration_4() = benchmarkRule.measureRepeated {
+
+        runBlocking {
+
+            remoteSource.getTrendingMovies()
+            remoteSource.getTrendingMovies()
+            remoteSource.getTrendingMovies()
+            remoteSource.getTrendingMovies()
+
+            val movieDetails = with(repository) {
+                getMoviesDetails(List(20) { it }).awaitAll()
+                getMoviesDetails(List(20) { it }).awaitAll()
+                getMoviesDetails(List(20) { it }).awaitAll()
+                getMoviesDetails(List(20) { it }).awaitAll()
+            }
+
+            repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
+            repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
+            repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
+            repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
+        }
+    }
 }
