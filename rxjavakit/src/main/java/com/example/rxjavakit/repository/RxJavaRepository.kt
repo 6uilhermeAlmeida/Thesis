@@ -38,6 +38,6 @@ class RxJavaRepository(private val remoteSource: IMovieWebServiceRxJava, private
 
     fun insertMoviesToDatabase(movieEntities: List<MovieEntity>): Completable {
         // Insert in local database
-        return Completable.fromAction { localSource.nukeAndInsert(movieEntities) }
+        return Completable.fromAction { localSource.nukeAndInsert(movieEntities) }.subscribeOn(Schedulers.io())
     }
 }
