@@ -37,7 +37,10 @@ object MovieWebServiceCoroutines {
         .addConverterFactory(GsonConverterFactory.create())
 
     val service: IMovieServiceCoroutines by lazy {
-        builder.client(MovieHttpClient.get()).build().create(IMovieServiceCoroutines::class.java)
+        builder
+            .client(MovieHttpClient.get())
+            .build()
+            .create(IMovieServiceCoroutines::class.java)
     }
 
     fun mock(): IMovieServiceCoroutines = builder
