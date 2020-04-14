@@ -14,13 +14,13 @@ object MainConfig {
      * Defines whether to use Kotlin Coroutines or RxJava for asynchronous tasks.
      */
 
-    private val library: Library = Library.Coroutines
+    private val library: Library = Library.RxJava
 
     /**
      * If true, the app will use mocked values for network calls.
      */
 
-    private const val useMockedNetwork: Boolean = true
+    private const val useMockedNetwork: Boolean = false
 
     /**
      * Provides the correct ViewModel according to [library] and [useMockedNetwork].

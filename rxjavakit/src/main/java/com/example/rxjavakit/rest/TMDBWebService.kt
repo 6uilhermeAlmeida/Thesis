@@ -39,7 +39,10 @@ object MovieWebServiceRxJava {
         .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
 
     val service: IMovieWebServiceRxJava by lazy {
-        builder.client(MovieHttpClient.get()).build().create(IMovieWebServiceRxJava::class.java)
+        builder
+            .client(MovieHttpClient.get())
+            .build()
+            .create(IMovieWebServiceRxJava::class.java)
     }
 
     fun mock(): IMovieWebServiceRxJava = builder
