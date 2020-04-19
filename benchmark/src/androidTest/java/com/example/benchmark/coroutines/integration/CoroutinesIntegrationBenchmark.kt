@@ -4,7 +4,14 @@ import androidx.benchmark.junit4.measureRepeated
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.benchmark.coroutines.CoroutinesBenchmark
 import com.example.kitprotocol.transformer.toEntity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -82,5 +89,16 @@ class CoroutinesIntegrationBenchmark : CoroutinesBenchmark() {
             repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
             repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
         }
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun integration_reactive() = benchmarkRule.measureRepeated {
+
+        val flow = callbackFlow { offer(runBlocking { remoteSource.getTrendingMovies() }) }
+            .flowOn(Dispatchers.IO)
+            .onStart { delay(1000) }
+
+        runBlocking { flow.first() }
     }
 }
