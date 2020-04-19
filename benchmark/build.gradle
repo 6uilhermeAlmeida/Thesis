@@ -1,7 +1,18 @@
+import com.github.opendevl.JFlat
+
 apply plugin: 'com.android.library'
 apply plugin: 'androidx.benchmark'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.github.opendevl:json2flat:1.0.3'
+    }
+}
 
 android {
     compileSdkVersion 29
@@ -61,32 +72,29 @@ dependencies {
     implementation project(path: ':rxjavakit')
 }
 
-task rxJavaDatabaseBenchmark(type: Exec) {
-    dependsOn ':benchmark:installDebugAndroidTest'
-    commandLine './rxJavaDatabaseBenchmark.sh'
+task benchmarkJsonToCsv {
+    doFirst {
+
+        def expectedBenchmarkPath = "$buildDir/outputs"
+        def files = fileTree(expectedBenchmarkPath)
+                .matching { include "**/*benchmarkData.json" }
+                .getFiles()
+
+        if (files.isEmpty()) {
+            throw new GradleException("No benchmark files found inside $expectedBenchmarkPath")
+        }
+
+        def benchmarkFile = files.first()
+        def strBytes = new String(benchmarkFile.bytes)
+
+        def csvFilePath = "$projectDir/results/benchmark.csv"
+        new JFlat(strBytes).json2Sheet().write2csv(csvFilePath)
+
+        println("CSV generated at $csvFilePath")
+    }
 }
 
-task rxJavaNetworkBenchmark(type: Exec) {
-    dependsOn ':benchmark:installDebugAndroidTest'
-    commandLine './rxJavaNetworkBenchmark.sh'
-}
-
-task rxJavaIntegrationBenchmark(type: Exec) {
-    dependsOn ':benchmark:installDebugAndroidTest'
-    commandLine './rxJavaIntegrationBenchmark.sh'
-}
-
-task coroutinesDatabaseBenchmark(type: Exec) {
-    dependsOn ':benchmark:installDebugAndroidTest'
-    commandLine './coroutinesDatabaseBenchmark.sh'
-}
-
-task coroutinesNetworkBenchmark(type: Exec) {
-    dependsOn ':benchmark:installDebugAndroidTest'
-    commandLine './coroutinesNetworkBenchmark.sh'
-}
-
-task coroutinesIntegrationBenchmark(type: Exec) {
-    dependsOn ':benchmark:installDebugAndroidTest'
-    commandLine './coroutinesIntegrationBenchmark.sh'
+task benchmark {
+    dependsOn ':benchmark:connectedCheck', ':benchmark:benchmarkJsonToCsv'
+    benchmarkJsonToCsv.mustRunAfter connectedCheck
 }
