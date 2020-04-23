@@ -2,6 +2,7 @@ package com.example.benchmark.coroutines.integration
 
 import androidx.benchmark.junit4.measureRepeated
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.benchmark.IIntegrationBenchmark
 import com.example.benchmark.coroutines.CoroutinesBenchmark
 import com.example.kitprotocol.transformer.toEntity
 import kotlinx.coroutines.Dispatchers
@@ -17,10 +18,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class CoroutinesIntegrationBenchmark : CoroutinesBenchmark() {
+class CoroutinesIntegrationBenchmark : CoroutinesBenchmark(), IIntegrationBenchmark {
 
     @Test
-    fun integration_1() = benchmarkRule.measureRepeated {
+    override fun integration_1() = benchmarkRule.measureRepeated {
         runBlocking {
             remoteSource.getTrendingMovies()
             val movieDetails = with(repository) { getMoviesDetails(List(20) { it }).awaitAll() }
@@ -29,7 +30,7 @@ class CoroutinesIntegrationBenchmark : CoroutinesBenchmark() {
     }
 
     @Test
-    fun integration_2() = benchmarkRule.measureRepeated {
+    override fun integration_2() = benchmarkRule.measureRepeated {
 
         runBlocking {
 
@@ -47,7 +48,7 @@ class CoroutinesIntegrationBenchmark : CoroutinesBenchmark() {
     }
 
     @Test
-    fun integration_3() = benchmarkRule.measureRepeated {
+    override fun integration_3() = benchmarkRule.measureRepeated {
 
         runBlocking {
 
@@ -68,7 +69,7 @@ class CoroutinesIntegrationBenchmark : CoroutinesBenchmark() {
     }
 
     @Test
-    fun integration_4() = benchmarkRule.measureRepeated {
+    override fun integration_4() = benchmarkRule.measureRepeated {
 
         runBlocking {
 
@@ -84,6 +85,33 @@ class CoroutinesIntegrationBenchmark : CoroutinesBenchmark() {
                 getMoviesDetails(List(20) { it }).awaitAll()
             }
 
+            repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
+            repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
+            repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
+            repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
+        }
+    }
+
+    @Test
+    override fun integration_5() = benchmarkRule.measureRepeated {
+
+        runBlocking {
+
+            remoteSource.getTrendingMovies()
+            remoteSource.getTrendingMovies()
+            remoteSource.getTrendingMovies()
+            remoteSource.getTrendingMovies()
+            remoteSource.getTrendingMovies()
+
+            val movieDetails = with(repository) {
+                getMoviesDetails(List(20) { it }).awaitAll()
+                getMoviesDetails(List(20) { it }).awaitAll()
+                getMoviesDetails(List(20) { it }).awaitAll()
+                getMoviesDetails(List(20) { it }).awaitAll()
+                getMoviesDetails(List(20) { it }).awaitAll()
+            }
+
+            repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
             repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
             repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
             repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
@@ -93,7 +121,7 @@ class CoroutinesIntegrationBenchmark : CoroutinesBenchmark() {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun integration_reactive() = benchmarkRule.measureRepeated {
+    override fun integration_reactive() = benchmarkRule.measureRepeated {
 
         val flow = callbackFlow { offer(runBlocking { remoteSource.getTrendingMovies() }) }
             .flowOn(Dispatchers.IO)

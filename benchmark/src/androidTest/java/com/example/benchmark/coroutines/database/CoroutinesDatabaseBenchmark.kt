@@ -2,6 +2,7 @@ package com.example.benchmark.coroutines.database
 
 import androidx.benchmark.junit4.measureRepeated
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.benchmark.IDatabaseBenchmark
 import com.example.benchmark.coroutines.CoroutinesBenchmark
 import com.example.benchmark.mock.getMockEntity
 import kotlinx.coroutines.async
@@ -13,7 +14,7 @@ import org.junit.runner.RunWith
 
 
 @RunWith(AndroidJUnit4::class)
-class CoroutinesDatabaseBenchmark : CoroutinesBenchmark() {
+class CoroutinesDatabaseBenchmark : CoroutinesBenchmark(), IDatabaseBenchmark {
 
     @Before
     fun before() {
@@ -25,7 +26,7 @@ class CoroutinesDatabaseBenchmark : CoroutinesBenchmark() {
      */
 
     @Test
-    fun insert_two_movies() = benchmarkRule.measureRepeated {
+    override fun insert_two_movies() = benchmarkRule.measureRepeated {
         runBlocking {
             val movieEntities = List(2) { getMockEntity(it) }
             localSource.suspendInsert(movieEntities)
@@ -33,7 +34,7 @@ class CoroutinesDatabaseBenchmark : CoroutinesBenchmark() {
     }
 
     @Test
-    fun insert_ten_movies() = benchmarkRule.measureRepeated {
+    override fun insert_ten_movies() = benchmarkRule.measureRepeated {
         runBlocking {
             val movieEntities = List(10) { getMockEntity(it) }
             localSource.suspendInsert(movieEntities)
@@ -41,7 +42,7 @@ class CoroutinesDatabaseBenchmark : CoroutinesBenchmark() {
     }
 
     @Test
-    fun insert_twenty_movies() = benchmarkRule.measureRepeated {
+    override fun insert_twenty_movies() = benchmarkRule.measureRepeated {
         runBlocking {
             val movieEntities = List(20) { getMockEntity(it) }
             localSource.suspendInsert(movieEntities)
@@ -49,7 +50,7 @@ class CoroutinesDatabaseBenchmark : CoroutinesBenchmark() {
     }
 
     @Test
-    fun insert_fifty_movies() = benchmarkRule.measureRepeated {
+    override fun insert_fifty_movies() = benchmarkRule.measureRepeated {
         runBlocking {
             val movieEntities = List(50) { getMockEntity(it) }
             localSource.suspendInsert(movieEntities)
@@ -57,7 +58,7 @@ class CoroutinesDatabaseBenchmark : CoroutinesBenchmark() {
     }
 
     @Test
-    fun insert_one_hundred_movies() = benchmarkRule.measureRepeated {
+    override fun insert_one_hundred_movies() = benchmarkRule.measureRepeated {
         runBlocking {
             val movieEntities = List(100) { getMockEntity(it) }
             localSource.suspendInsert(movieEntities)
@@ -65,7 +66,7 @@ class CoroutinesDatabaseBenchmark : CoroutinesBenchmark() {
     }
 
     @Test
-    fun clear_and_insert_twenty_movies() = benchmarkRule.measureRepeated {
+    override fun clear_and_insert_twenty_movies() = benchmarkRule.measureRepeated {
         clearAndInsertMovies(size = 20)
     }
 
@@ -74,25 +75,25 @@ class CoroutinesDatabaseBenchmark : CoroutinesBenchmark() {
      */
 
     @Test
-    fun query_twenty_movies() = benchmarkRule.measureRepeated {
+    override fun query_twenty_movies() = benchmarkRule.measureRepeated {
         runWithTimingDisabled { clearAndInsertMovies(size = 20) }
         runBlocking { localSource.allSuspending() }
     }
 
     @Test
-    fun query_fifty_movies() = benchmarkRule.measureRepeated {
+    override fun query_fifty_movies() = benchmarkRule.measureRepeated {
         runWithTimingDisabled { clearAndInsertMovies(size = 50) }
         runBlocking { localSource.allSuspending() }
     }
 
     @Test
-    fun query_one_hundred_movies() = benchmarkRule.measureRepeated {
+    override fun query_one_hundred_movies() = benchmarkRule.measureRepeated {
         runWithTimingDisabled { clearAndInsertMovies(size = 100) }
         runBlocking { localSource.allSuspending() }
     }
 
     @Test
-    fun query_twenty_movies_in_parallel() = benchmarkRule.measureRepeated {
+    override fun query_twenty_movies_in_parallel() = benchmarkRule.measureRepeated {
         runWithTimingDisabled { clearAndInsertMovies(size = 20) }
         runBlocking { List(20) { async { localSource.allSuspending() } }.awaitAll() }
     }

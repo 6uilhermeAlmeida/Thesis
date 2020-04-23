@@ -150,8 +150,6 @@ Vbenchmark/src/androidTest/java/com/example/benchmark/coroutines/CoroutinesBench
 Nbenchmark/src/androidTest/java/com/example/benchmark/rxjava/RxJavaBenchmark.kt,4/f/4fe093b560806b7e24a8491c59252e7bce499a47
 @
 local.properties,0/7/0712df971a99ac4d2fccb8e0fb19f377f3374cca
-U
-%benchmark/results/rxjava_database.txt,b/a/ba35a4e462c0a907b0c00e2c30d97a1173b53f40
 ó
 gbenchmark/src/androidTest/java/com/example/benchmark/coroutines/database/CoroutinesDatabaseBenchmark.kt,0/c/0c55caf28277d7be1e80ab92d4d61122b7fe1f08
 ù
@@ -176,21 +174,15 @@ S
 #benchmark/rxJavaNetworkBenchmark.sh,5/c/5c77c1990cf48d36000e3fd73f2753b92aa6a14e
 ï
 ebenchmark/src/androidTest/java/com/example/benchmark/coroutines/network/CoroutinesNetworkBenchmark.kt,9/8/98c23d24e49b1516c56537a247adeb16346628e4
-X
-(benchmark/results/coroutines_network.txt,f/7/f7f0aa0a531be79bb60dc9593b7eec87f380f149
-T
-$benchmark/results/rxjava_network.txt,a/d/adf7310a3bdab6af5b3614e57d488cd80f91bcea
-X
-(benchmark/results/rxjava_integration.txt,2/0/20c2f5d1d29697a9f0ca17b98881c5c224a5fee2
-\
-,benchmark/results/coroutines_integration.txt,4/d/4d4b414a6d499d8952479776c67ef3fd63d49cb9
 ]
 -benchmark/src/androidTest/AndroidManifest.xml,f/1/f1c92a04851d5dbe4ae65e072dafec57dd80b566
 V
 &benchmark/src/main/AndroidManifest.xml,7/8/786ff61b501f07c91ef4fea216a28f5dab04974f
-Y
-)benchmark/results/coroutines_database.txt,e/0/e025856802fdd4d0349fdf1de24adae98faca85e
 L
 rxjavakit/consumer-rules.pro,a/7/a76b0dc441be7911949e717613259f2a11efd1c0
 V
 &benchmark/benchmark-proguard-rules.pro,d/f/dfefb3931050084b3a688cd8f50e6c28620aaa3e
+O
+benchmark/results/benchmark.csv,8/c/8ccb81b6882a628873970952d48589d1a01eb3ce
+7
+gradlew,5/b/5bbfa66edb4db3c7c33c5181f43510990d3307f9

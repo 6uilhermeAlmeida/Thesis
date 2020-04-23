@@ -1,4 +1,6 @@
-import com.github.opendevl.JFlat
+import org.json.JSONObject
+import org.jsontocsv.parser.JSONFlattener
+import org.jsontocsv.writer.CSVWriter
 
 apply plugin: 'com.android.library'
 apply plugin: 'androidx.benchmark'
@@ -8,9 +10,11 @@ apply plugin: 'kotlin-android-extensions'
 buildscript {
     repositories {
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
+
     dependencies {
-        classpath 'com.github.opendevl:json2flat:1.0.3'
+        classpath 'com.github.arkni:json-to-csv:-SNAPSHOT'
     }
 }
 
@@ -50,6 +54,10 @@ android {
     }
 }
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -73,23 +81,38 @@ dependencies {
 }
 
 task benchmarkJsonToCsv {
+
     doFirst {
 
+        // Getting benchmark files available
+        // Matching by the format described in the docs
         def expectedBenchmarkPath = "$buildDir/outputs"
         def files = fileTree(expectedBenchmarkPath)
                 .matching { include "**/*benchmarkData.json" }
                 .getFiles()
 
+        // If no benchmark file is found stop the task
         if (files.isEmpty()) {
             throw new GradleException("No benchmark files found inside $expectedBenchmarkPath")
         }
 
+        // Get the first benchmark file and getting the 'benchmarks' array inside the JSON file
         def benchmarkFile = files.first()
         def strBytes = new String(benchmarkFile.bytes)
+        def arrayObject = new JSONObject(strBytes).getJSONArray("benchmarks")
 
+        // If the 'benchmarks' array is empty, stop the task
+        if (arrayObject == null || arrayObject.length() < 1) {
+            throw new GradleException("Could not find any benchmark data inside the JSON file.")
+        }
+
+        def flatArray = JSONFlattener.parse(arrayObject)
+
+        // Writing flatted benchmark data to csv
         def csvFilePath = "$projectDir/results/benchmark.csv"
-        new JFlat(strBytes).json2Sheet().write2csv(csvFilePath)
+        CSVWriter.writeToFile(CSVWriter.getCSV(flatArray), csvFilePath)
 
+        println(CSVWriter.getCSV(flatArray))
         println("CSV generated at $csvFilePath")
     }
 }
