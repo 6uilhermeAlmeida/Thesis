@@ -2,6 +2,7 @@ package com.example.benchmark.rxjava.integration
 
 import androidx.benchmark.junit4.measureRepeated
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.benchmark.IIntegrationBenchmark
 import com.example.benchmark.rxjava.RxJavaBenchmark
 import com.example.kitprotocol.rest.model.MovieResponse
 import com.example.kitprotocol.transformer.toEntity
@@ -14,10 +15,10 @@ import org.junit.runner.RunWith
 import java.util.concurrent.TimeUnit
 
 @RunWith(AndroidJUnit4::class)
-class RxJavaIntegrationBenchmark : RxJavaBenchmark() {
+class RxJavaIntegrationBenchmark : RxJavaBenchmark(), IIntegrationBenchmark {
 
     @Test
-    fun integration_1() = benchmarkRule.measureRepeated {
+    override fun integration_1() = benchmarkRule.measureRepeated {
         remoteSource.getTrendingMovies()
             .flatMap { repository.getMoviesDetail(List(20) { it }) }
             .flatMapCompletable { repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() }) }
@@ -25,7 +26,7 @@ class RxJavaIntegrationBenchmark : RxJavaBenchmark() {
     }
 
     @Test
-    fun integration_2() = benchmarkRule.measureRepeated {
+    override fun integration_2() = benchmarkRule.measureRepeated {
         remoteSource.getTrendingMovies()
             .flatMap { remoteSource.getTrendingMovies() }
             .flatMap { repository.getMoviesDetail(List(20) { it }) }
@@ -37,7 +38,7 @@ class RxJavaIntegrationBenchmark : RxJavaBenchmark() {
     }
 
     @Test
-    fun integration_3() = benchmarkRule.measureRepeated {
+    override fun integration_3() = benchmarkRule.measureRepeated {
         remoteSource.getTrendingMovies()
             .flatMap { remoteSource.getTrendingMovies() }
             .flatMap { remoteSource.getTrendingMovies() }
@@ -53,7 +54,7 @@ class RxJavaIntegrationBenchmark : RxJavaBenchmark() {
     }
 
     @Test
-    fun integration_4() = benchmarkRule.measureRepeated {
+    override fun integration_4() = benchmarkRule.measureRepeated {
         remoteSource.getTrendingMovies()
             .flatMap { remoteSource.getTrendingMovies() }
             .flatMap { remoteSource.getTrendingMovies() }
@@ -72,7 +73,29 @@ class RxJavaIntegrationBenchmark : RxJavaBenchmark() {
     }
 
     @Test
-    fun integration_reactive() = benchmarkRule.measureRepeated {
+    override fun integration_5() = benchmarkRule.measureRepeated {
+        remoteSource.getTrendingMovies()
+            .flatMap { remoteSource.getTrendingMovies() }
+            .flatMap { remoteSource.getTrendingMovies() }
+            .flatMap { remoteSource.getTrendingMovies() }
+            .flatMap { remoteSource.getTrendingMovies() }
+            .flatMap { repository.getMoviesDetail(List(20) { it }) }
+            .flatMap { repository.getMoviesDetail(List(20) { it }) }
+            .flatMap { repository.getMoviesDetail(List(20) { it }) }
+            .flatMap { repository.getMoviesDetail(List(20) { it }) }
+            .flatMap { repository.getMoviesDetail(List(20) { it }) }
+            .flatMapCompletable {
+                repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() })
+                    .andThen(repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() }))
+                    .andThen(repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() }))
+                    .andThen(repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() }))
+                    .andThen(repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() }))
+                    .andThen(Completable.complete())
+            }.blockingAwait()
+    }
+
+    @Test
+    override fun integration_reactive() = benchmarkRule.measureRepeated {
 
         val flowable = Flowable.create<MovieResponse>({ emitter ->
             emitter.onNext(remoteSource.getTrendingMovies().blockingGet())
