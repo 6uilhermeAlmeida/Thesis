@@ -12,13 +12,13 @@ import io.reactivex.Flowable
 import io.reactivex.schedulers.Schedulers
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.concurrent.TimeUnit
 
 @RunWith(AndroidJUnit4::class)
 class RxJavaIntegrationBenchmark : RxJavaBenchmark(), IIntegrationBenchmark {
 
     @Test
     override fun integration_1() = benchmarkRule.measureRepeated {
+        runWithTimingDisabled { localSource.nukeAsCompletable().blockingAwait() }
         remoteSource.getTrendingMovies()
             .flatMap { repository.getMoviesDetail(List(20) { it }) }
             .flatMapCompletable { repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() }) }
@@ -27,6 +27,7 @@ class RxJavaIntegrationBenchmark : RxJavaBenchmark(), IIntegrationBenchmark {
 
     @Test
     override fun integration_2() = benchmarkRule.measureRepeated {
+        runWithTimingDisabled { localSource.nukeAsCompletable().blockingAwait() }
         remoteSource.getTrendingMovies()
             .flatMap { remoteSource.getTrendingMovies() }
             .flatMap { repository.getMoviesDetail(List(20) { it }) }
@@ -39,6 +40,7 @@ class RxJavaIntegrationBenchmark : RxJavaBenchmark(), IIntegrationBenchmark {
 
     @Test
     override fun integration_3() = benchmarkRule.measureRepeated {
+        runWithTimingDisabled { localSource.nukeAsCompletable().blockingAwait() }
         remoteSource.getTrendingMovies()
             .flatMap { remoteSource.getTrendingMovies() }
             .flatMap { remoteSource.getTrendingMovies() }
@@ -55,6 +57,7 @@ class RxJavaIntegrationBenchmark : RxJavaBenchmark(), IIntegrationBenchmark {
 
     @Test
     override fun integration_4() = benchmarkRule.measureRepeated {
+        runWithTimingDisabled { localSource.nukeAsCompletable().blockingAwait() }
         remoteSource.getTrendingMovies()
             .flatMap { remoteSource.getTrendingMovies() }
             .flatMap { remoteSource.getTrendingMovies() }
@@ -65,28 +68,6 @@ class RxJavaIntegrationBenchmark : RxJavaBenchmark(), IIntegrationBenchmark {
             .flatMap { repository.getMoviesDetail(List(20) { it }) }
             .flatMapCompletable {
                 repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() })
-                    .andThen(repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() }))
-                    .andThen(repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() }))
-                    .andThen(repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() }))
-                    .andThen(Completable.complete())
-            }.blockingAwait()
-    }
-
-    @Test
-    override fun integration_5() = benchmarkRule.measureRepeated {
-        remoteSource.getTrendingMovies()
-            .flatMap { remoteSource.getTrendingMovies() }
-            .flatMap { remoteSource.getTrendingMovies() }
-            .flatMap { remoteSource.getTrendingMovies() }
-            .flatMap { remoteSource.getTrendingMovies() }
-            .flatMap { repository.getMoviesDetail(List(20) { it }) }
-            .flatMap { repository.getMoviesDetail(List(20) { it }) }
-            .flatMap { repository.getMoviesDetail(List(20) { it }) }
-            .flatMap { repository.getMoviesDetail(List(20) { it }) }
-            .flatMap { repository.getMoviesDetail(List(20) { it }) }
-            .flatMapCompletable {
-                repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() })
-                    .andThen(repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() }))
                     .andThen(repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() }))
                     .andThen(repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() }))
                     .andThen(repository.insertMoviesToDatabase(it.mapNotNull { movieDetails -> movieDetails.toEntity() }))
@@ -100,8 +81,8 @@ class RxJavaIntegrationBenchmark : RxJavaBenchmark(), IIntegrationBenchmark {
         val flowable = Flowable.create<MovieResponse>({ emitter ->
             emitter.onNext(remoteSource.getTrendingMovies().blockingGet())
         }, BackpressureStrategy.LATEST)
+            .flatMapSingle { remoteSource.getMoviesNowPlayingForRegion("PT") }
             .subscribeOn(Schedulers.io())
-            .delay(1, TimeUnit.SECONDS)
 
         flowable.blockingFirst()
     }

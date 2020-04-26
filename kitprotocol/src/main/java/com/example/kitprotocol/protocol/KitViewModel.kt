@@ -35,8 +35,9 @@ abstract class KitViewModel(application: Application, mock: Boolean) : AndroidVi
     protected val context: Context
         get() = getApplication()
 
-    override var localRunNumber: Int? = null
-    override var trendingRunNumber: Int? = null
+    override var localRunNumber: Int = 0
+    override var trendingRunNumber: Int = 0
+
     override var startTrending: Long = 0
     override var startLocal: Long = 0
 

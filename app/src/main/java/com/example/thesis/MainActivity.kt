@@ -20,6 +20,7 @@ import com.example.thesis.adapter.MovieAdapter
 import com.example.thesis.command.OpenYoutubeCommand
 import com.example.thesis.config.MainConfig
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.android.synthetic.main.activity_main.appbar
 import kotlinx.android.synthetic.main.activity_main.recyclerView_main
 import kotlinx.android.synthetic.main.activity_main.swipe_refresh_layout
 import kotlinx.android.synthetic.main.activity_main.toolbar
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity(), MovieProtocol {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         val gcItem = menu?.getItem(1)?.apply { isVisible = false }
-        toolbar.setOnLongClickListener {
+        appbar.setOnLongClickListener {
             gcItem?.apply { isVisible = !isVisible }
             return@setOnLongClickListener true
         }

@@ -186,3 +186,9 @@ O
 benchmark/results/benchmark.csv,8/c/8ccb81b6882a628873970952d48589d1a01eb3ce
 7
 gradlew,5/b/5bbfa66edb4db3c7c33c5181f43510990d3307f9
+z
+Jbenchmark/src/androidTest/java/com/example/benchmark/IDatabaseBenchmark.kt,4/6/4649c6bb1cd866bed1d9de7fcd668d7cfbfca4fc
+}
+Mbenchmark/src/androidTest/java/com/example/benchmark/IIntegrationBenchmark.kt,d/2/d2f95b2f2f273b0bbd39415f8529efd3b3af4c3f
+y
+Ibenchmark/src/androidTest/java/com/example/benchmark/INetworkBenchmark.kt,4/6/46f88653cbf28d140240234df8b943316e690f7e

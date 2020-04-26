@@ -9,13 +9,14 @@ interface MovieTimer {
         private fun log(message: String) = Log.i(LOG_TAG, message)
     }
 
-    var trendingRunNumber: Int?
-    var localRunNumber: Int?
+    var trendingRunNumber: Int
+    var localRunNumber: Int
+
     var startTrending: Long
     var startLocal: Long
 
     fun startTrendingMoviesTimer() {
-        trendingRunNumber = trendingRunNumber?.inc() ?: 1
+        trendingRunNumber++
         startTrending = System.currentTimeMillis()
     }
 
@@ -24,7 +25,7 @@ interface MovieTimer {
     }
 
     fun startLocalMoviesTimer() {
-        localRunNumber = localRunNumber?.inc() ?: 1
+        localRunNumber++
         startLocal = System.currentTimeMillis()
     }
 
