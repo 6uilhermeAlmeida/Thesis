@@ -16,8 +16,5 @@ interface IIntegrationBenchmark {
     fun integration_4()
 
     @Test
-    fun integration_5()
-
-    @Test
     fun integration_reactive()
 }
