@@ -8,11 +8,10 @@ import com.example.kitprotocol.transformer.toEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -22,6 +21,9 @@ class CoroutinesIntegrationBenchmark : CoroutinesBenchmark(), IIntegrationBenchm
 
     @Test
     override fun integration_1() = benchmarkRule.measureRepeated {
+        runWithTimingDisabled {
+            runBlocking { localSource.suspendNuke() }
+        }
         runBlocking {
             remoteSource.getTrendingMovies()
             val movieDetails = with(repository) { getMoviesDetails(List(20) { it }).awaitAll() }
@@ -31,7 +33,9 @@ class CoroutinesIntegrationBenchmark : CoroutinesBenchmark(), IIntegrationBenchm
 
     @Test
     override fun integration_2() = benchmarkRule.measureRepeated {
-
+        runWithTimingDisabled {
+            runBlocking { localSource.suspendNuke() }
+        }
         runBlocking {
 
             remoteSource.getTrendingMovies()
@@ -49,7 +53,9 @@ class CoroutinesIntegrationBenchmark : CoroutinesBenchmark(), IIntegrationBenchm
 
     @Test
     override fun integration_3() = benchmarkRule.measureRepeated {
-
+        runWithTimingDisabled {
+            runBlocking { localSource.suspendNuke() }
+        }
         runBlocking {
 
             remoteSource.getTrendingMovies()
@@ -70,34 +76,11 @@ class CoroutinesIntegrationBenchmark : CoroutinesBenchmark(), IIntegrationBenchm
 
     @Test
     override fun integration_4() = benchmarkRule.measureRepeated {
-
-        runBlocking {
-
-            remoteSource.getTrendingMovies()
-            remoteSource.getTrendingMovies()
-            remoteSource.getTrendingMovies()
-            remoteSource.getTrendingMovies()
-
-            val movieDetails = with(repository) {
-                getMoviesDetails(List(20) { it }).awaitAll()
-                getMoviesDetails(List(20) { it }).awaitAll()
-                getMoviesDetails(List(20) { it }).awaitAll()
-                getMoviesDetails(List(20) { it }).awaitAll()
-            }
-
-            repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
-            repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
-            repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
-            repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
+        runWithTimingDisabled {
+            runBlocking { localSource.suspendNuke() }
         }
-    }
-
-    @Test
-    override fun integration_5() = benchmarkRule.measureRepeated {
-
         runBlocking {
 
-            remoteSource.getTrendingMovies()
             remoteSource.getTrendingMovies()
             remoteSource.getTrendingMovies()
             remoteSource.getTrendingMovies()
@@ -108,10 +91,8 @@ class CoroutinesIntegrationBenchmark : CoroutinesBenchmark(), IIntegrationBenchm
                 getMoviesDetails(List(20) { it }).awaitAll()
                 getMoviesDetails(List(20) { it }).awaitAll()
                 getMoviesDetails(List(20) { it }).awaitAll()
-                getMoviesDetails(List(20) { it }).awaitAll()
             }
 
-            repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
             repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
             repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
             repository.insertMoviesToDatabase(movieDetails.mapNotNull { it.toEntity() })
@@ -124,8 +105,8 @@ class CoroutinesIntegrationBenchmark : CoroutinesBenchmark(), IIntegrationBenchm
     override fun integration_reactive() = benchmarkRule.measureRepeated {
 
         val flow = callbackFlow { offer(runBlocking { remoteSource.getTrendingMovies() }) }
+            .onEach { remoteSource.getMoviesNowPlayingForRegion("PT") }
             .flowOn(Dispatchers.IO)
-            .onStart { delay(1000) }
 
         runBlocking { flow.first() }
     }

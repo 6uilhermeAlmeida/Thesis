@@ -7,7 +7,6 @@ import com.example.benchmark.mock.getMockEntity
 import com.example.benchmark.rxjava.RxJavaBenchmark
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -15,41 +14,41 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class RxJavaDatabaseBenchmark : RxJavaBenchmark(), IDatabaseBenchmark {
 
-    @Before
-    fun before() {
-        localSource.nukeAsCompletable().blockingAwait()
-    }
-
     /**
      * Inserts
      */
 
     @Test
     override fun insert_two_movies() = benchmarkRule.measureRepeated {
+        runWithTimingDisabled { localSource.nukeAsCompletable().blockingAwait() }
         val entities = List(2) { getMockEntity(it) }
         localSource.insertAsCompletable(entities).blockingAwait()
     }
 
     @Test
     override fun insert_ten_movies() = benchmarkRule.measureRepeated {
+        runWithTimingDisabled { localSource.nukeAsCompletable().blockingAwait() }
         val entities = List(10) { getMockEntity(it) }
         localSource.insertAsCompletable(entities).blockingAwait()
     }
 
     @Test
     override fun insert_twenty_movies() = benchmarkRule.measureRepeated {
+        runWithTimingDisabled { localSource.nukeAsCompletable().blockingAwait() }
         val entities = List(20) { getMockEntity(it) }
         localSource.insertAsCompletable(entities).blockingAwait()
     }
 
     @Test
     override fun insert_fifty_movies() = benchmarkRule.measureRepeated {
+        runWithTimingDisabled { localSource.nukeAsCompletable().blockingAwait() }
         val entities = List(50) { getMockEntity(it) }
         localSource.insertAsCompletable(entities).blockingAwait()
     }
 
     @Test
     override fun insert_one_hundred_movies() = benchmarkRule.measureRepeated {
+        runWithTimingDisabled { localSource.nukeAsCompletable().blockingAwait() }
         val entities = List(100) { getMockEntity(it) }
         localSource.insertAsCompletable(entities).blockingAwait()
     }
