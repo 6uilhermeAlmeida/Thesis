@@ -40,4 +40,7 @@ interface IDatabaseBenchmark {
 
     @Test
     fun query_twenty_movies_in_parallel()
+
+    @Test
+    fun query_twenty_movies_reactive()
 }

@@ -7,6 +7,7 @@ import com.example.benchmark.coroutines.CoroutinesBenchmark
 import com.example.benchmark.mock.getMockEntity
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -105,6 +106,12 @@ class CoroutinesDatabaseBenchmark : CoroutinesBenchmark(), IDatabaseBenchmark {
     override fun query_twenty_movies_in_parallel() = benchmarkRule.measureRepeated {
         runWithTimingDisabled { clearAndInsertMovies(size = 20) }
         runBlocking { List(20) { async { localSource.allSuspending() } }.awaitAll() }
+    }
+
+    @Test
+    override fun query_twenty_movies_reactive() = benchmarkRule.measureRepeated {
+        runWithTimingDisabled { clearAndInsertMovies(size = 20) }
+        runBlocking { localSource.allByFlow().first() }
     }
 
     private fun clearAndInsertMovies(size: Int = 20) {
