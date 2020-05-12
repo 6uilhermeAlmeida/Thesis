@@ -89,6 +89,12 @@ class RxJavaDatabaseBenchmark : RxJavaBenchmark(), IDatabaseBenchmark {
         Single.zip(singlesToZip) { it.toList() }.blockingGet()
     }
 
+    @Test
+    override fun query_twenty_movies_reactive() = benchmarkRule.measureRepeated {
+        runWithTimingDisabled { clearAndInsertMovies(20) }
+        localSource.allByFlowable().blockingFirst()
+    }
+
     private fun clearAndInsertMovies(size: Int) {
         val listToInsert = List(size) { getMockEntity(it) }
         repository.insertMoviesToDatabase(listToInsert).blockingAwait()
