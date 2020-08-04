@@ -47,23 +47,10 @@ interface MovieDao {
         suspendInsert(movieEntities)
     }
 
-    // Completable methods for RxJava (demo)
+    // Completable methods for RxJava
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAsCompletable(movieEntities: List<MovieEntity>) : Completable
+    fun insertAsCompletable(movieEntities: List<MovieEntity>): Completable
 
     @Query("DELETE FROM MovieEntity")
     fun nukeAsCompletable() : Completable
-
-    // Regular functions
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(movieEntities: List<MovieEntity>)
-
-    @Query("DELETE FROM MovieEntity")
-    fun nuke()
-
-    @Transaction
-    fun nukeAndInsert(movieEntities: List<MovieEntity>) {
-        nuke()
-        insert(movieEntities)
-    }
 }

@@ -8,10 +8,13 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 internal suspend fun getAddresses(addressRepository: AddressRepository, location: Location, maxResults: Int) =
-    suspendCancellableCoroutine<List<Address>> { cont ->
+    suspendCancellableCoroutine<List<Address>> { continuation ->
         addressRepository.getAddresses(location.longitude, location.latitude, maxResults) { addresses, throwable ->
-            addresses?.let { cont.resume(it) }
-                ?: throwable?.let { cont.resumeWithException(it) }
-                ?: cont.resumeWithException(IllegalStateException("At least one value must be not null"))
+            if (addresses != null) {
+                continuation.resume(addresses)
+            } else {
+                val exception = checkNotNull(throwable) { "If the result is null, the exception cannot be." }
+                continuation.resumeWithException(exception)
+            }
         }
     }

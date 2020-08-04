@@ -11,13 +11,11 @@ import com.example.kitprotocol.db.entity.MovieEntity
 abstract class MovieDatabase : RoomDatabase() {
 
     companion object {
-
         private var instance: MovieDatabase? = null
         fun getInstance(context: Context): MovieDatabase {
-            return instance
-                ?: Room.databaseBuilder(context, MovieDatabase::class.java, "movie-db")
-                    .build()
-                    .also { instance = it }
+            return instance ?: Room.databaseBuilder(context, MovieDatabase::class.java, "movie-db")
+                .build()
+                .also { instance = it }
         }
     }
 

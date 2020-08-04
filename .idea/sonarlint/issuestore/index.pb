@@ -2,11 +2,11 @@
 ˆ
 Xcoroutineskit/src/main/java/com/example/coroutineskit/repository/CoroutinesRepository.kt,7\1\71c458aede85f7e7f724b63a4cfd21ca6b158128
 †
-Vcoroutineskit/src/main/java/com/example/coroutineskit/viewmodel/CoroutinesViewModel.kt,f\d\fdcd07b9a46ee6253a7f60a1de70ada233add2b9
+Vcoroutineskit/src/main/java/com/example/coroutineskit/viewmodel/CoroutinesViewModel.kt,f/d/fdcd07b9a46ee6253a7f60a1de70ada233add2b9
 d
 4app/src/main/java/com/example/thesis/MainActivity.kt,6/2/62bb2cb709b26d41f83f72388f1ff542612496fa
 |
-Lrxjavakit/src/main/java/com/example/rxjavakit/repository/RxJavaRepository.kt,0\6\06604f7eaf395d5c5ca714ff7bacce1b5630e7d1
+Lrxjavakit/src/main/java/com/example/rxjavakit/repository/RxJavaRepository.kt,0/6/06604f7eaf395d5c5ca714ff7bacce1b5630e7d1
 A
 gradle.properties,2\a\2afbb999f001938c88fa43fc2ef52abf0f8213e4
 X
@@ -20,7 +20,7 @@ Jrxjavakit/src/main/java/com/example/rxjavakit/viewmodel/RxJavaViewModel.kt,6/9
 <
 build.gradle,f/0/f07866736216be0ee2aba49e392191aeae700a35
 @
-app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
+app/build.gradle,f/4/f4a01d6a4fcb971362ec00a83903fd3902f52164
 |
 Lcoroutineskit/src/main/java/com/example/coroutineskit/rest/TMDBWebService.kt,7/b/7bd1df2ee6c0364c51b059fccf7921d9055a7f67
 l
@@ -64,9 +64,9 @@ H
 t
 Dkitprotocol/src/main/java/com/example/kitprotocol/db/dao/MovieDao.kt,c/8/c82a45077cb83593c7066009a584f365fdd3a297
 t
-Drxjavakit/src/main/java/com/example/rxjavakit/rest/TMDBWebService.kt,a\5\a519fd45ed5762f06c9460af10f162b8d777be03
+Drxjavakit/src/main/java/com/example/rxjavakit/rest/TMDBWebService.kt,a/5/a519fd45ed5762f06c9460af10f162b8d777be03
 z
-Jkitprotocol/src/main/java/com/example/kitprotocol/db/entity/MovieEntity.kt,5\8\5858f759aa6cb78e54e2c51553a9d87d840167b4
+Jkitprotocol/src/main/java/com/example/kitprotocol/db/entity/MovieEntity.kt,5/8/5858f759aa6cb78e54e2c51553a9d87d840167b4
 ‡
 Wkitprotocol/src/main/java/com/example/kitprotocol/transformer/MovieDetailTransformer.kt,5\a\5a833c076f2cdfd7be8a558678841d520c6b4771
 |
@@ -98,7 +98,7 @@ S
 }
 Mkitprotocol/src/main/java/com/example/kitprotocol/rest/model/MovieResponse.kt,7\4\74e1fdf97548659f814e93486d906a3c32094da3
 u
-Ekitprotocol/src/main/java/com/example/kitprotocol/rest/model/Movie.kt,c\9\c986d9b3023ba0731206d53f2b5d15e40a57a748
+Ekitprotocol/src/main/java/com/example/kitprotocol/rest/model/Movie.kt,c/9/c986d9b3023ba0731206d53f2b5d15e40a57a748
 ”
 dkitprotocol/src/main/java/com/example/kitprotocol/throwable/LocationProviderNotAvailableException.kt,e\4\e4ccd529ba85930e18353aca5a2bfbad6b6283da
 ~
@@ -112,7 +112,7 @@ j
 v
 Fbenchmark/src/androidTest/java/com/example/benchmark/mock/MockModel.kt,2/9/298bcb7af45f0213969bd8b82af3d2cd84ddf3f4
 F
-benchmark/build.gradle,8\f\8f7e28a1d7e0962aabd9dbab5a371ce898a7abb4
+benchmark/build.gradle,8/f/8f7e28a1d7e0962aabd9dbab5a371ce898a7abb4
 {
 Kkitprotocol/src/main/java/com/example/kitprotocol/constant/TMDBConstants.kt,9/a/9afd1288a59b9ab1b9b654ba00a5b1f1325db5cb
 x
@@ -135,13 +135,13 @@ D
 y
 Ikitprotocol/src/main/java/com/example/kitprotocol/mock/MockInterceptor.kt,a/f/afabbce1840eea6a996aafb8e77ee31897a57c3b
 y
-Irxjavakit/src/main/java/com/example/rxjavakit/location/AddressesSingle.kt,9\f\9ffef3c74265aedfa55be2e3e2d51ff82480c704
+Irxjavakit/src/main/java/com/example/rxjavakit/location/AddressesSingle.kt,9/f/9ffef3c74265aedfa55be2e3e2d51ff82480c704
 ‹
-[coroutineskit/src/main/java/com/example/coroutineskit/location/AddressesSuspendCoroutine.kt,d\1\d17ff5f146e6699c1d358e37ba35844161c4848f
+[coroutineskit/src/main/java/com/example/coroutineskit/location/AddressesSuspendCoroutine.kt,d/1/d17ff5f146e6699c1d358e37ba35844161c4848f
 ~
-Nkitprotocol/src/main/java/com/example/kitprotocol/location/AdressRepository.kt,8\3\831b72ee57e96ad5ec487737e8bcf8c2c59521e0
+Nkitprotocol/src/main/java/com/example/kitprotocol/location/AdressRepository.kt,8/3/831b72ee57e96ad5ec487737e8bcf8c2c59521e0
 z
-Jkitprotocol/src/main/java/com/example/kitprotocol/protocol/KitViewModel.kt,8\3\8354984a67f397b2a7b64f46a047c3c262427d64
+Jkitprotocol/src/main/java/com/example/kitprotocol/protocol/KitViewModel.kt,8/3/8354984a67f397b2a7b64f46a047c3c262427d64
 i
 9app/src/main/java/com/example/thesis/config/MainConfig.kt,4/e/4ed2f5a6360a796fbb78ae210845b783c7ef3c30
 †
@@ -151,11 +151,11 @@ Nbenchmark/src/androidTest/java/com/example/benchmark/rxjava/RxJavaBenchmark.kt
 @
 local.properties,0\7\0712df971a99ac4d2fccb8e0fb19f377f3374cca
 —
-gbenchmark/src/androidTest/java/com/example/benchmark/coroutines/database/CoroutinesDatabaseBenchmark.kt,0\c\0c55caf28277d7be1e80ab92d4d61122b7fe1f08
+gbenchmark/src/androidTest/java/com/example/benchmark/coroutines/database/CoroutinesDatabaseBenchmark.kt,0/c/0c55caf28277d7be1e80ab92d4d61122b7fe1f08
 
 mbenchmark/src/androidTest/java/com/example/benchmark/coroutines/integration/CoroutinesIntegrationBenchmark.kt,7/e/7eebfa450e0a3cc9f10496c50dc8d1ac90a3bfe0
 
-_benchmark/src/androidTest/java/com/example/benchmark/rxjava/database/RxJavaDatabaseBenchmark.kt,4\1\41f942289945d323cd23dc031d36712d1a9f0f16
+_benchmark/src/androidTest/java/com/example/benchmark/rxjava/database/RxJavaDatabaseBenchmark.kt,4/1/41f942289945d323cd23dc031d36712d1a9f0f16
 •
 ebenchmark/src/androidTest/java/com/example/benchmark/rxjava/integration/RxJavaIntegrationBenchmark.kt,f/d/fd78ec0aa8764af5fce3cb2cc13e2d358ccf853d
 
@@ -190,3 +190,9 @@ Jbenchmark/src/androidTest/java/com/example/benchmark/IDatabaseBenchmark.kt,4\6
 Mbenchmark/src/androidTest/java/com/example/benchmark/IIntegrationBenchmark.kt,d/2/d2f95b2f2f273b0bbd39415f8529efd3b3af4c3f
 y
 Ibenchmark/src/androidTest/java/com/example/benchmark/INetworkBenchmark.kt,4/6/46f88653cbf28d140240234df8b943316e690f7e
+C
+benchmark/json.json,a/b/ab53e593651272dffba9bf6ed490c9b1608be33f
+?
+benchmark/sh.sh,f/e/febaf24865137c57615f5336fe8cfa569be4d878
+u
+Ekitprotocol/src/main/java/com/example/kitprotocol/db/MovieDatabase.kt,f/4/f4da0470670d9a2373ed6b3ee8eafec37f74e580
