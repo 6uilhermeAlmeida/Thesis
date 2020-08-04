@@ -1,5 +1,6 @@
 package com.example.rxjavakit.location
 
+import android.annotation.SuppressLint
 import android.location.Location
 import android.os.Looper
 import com.example.kitprotocol.throwable.LocationProviderNotAvailableException
@@ -11,20 +12,19 @@ import com.google.android.gms.location.LocationResult
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 
-internal fun getLocationUpdates(
-    locationServiceClient: FusedLocationProviderClient,
-    locationRequest: LocationRequest
-): Flowable<Location> = Flowable.create({ emitter ->
+@SuppressLint("MissingPermission")
+internal fun getLocationUpdates(locationServiceClient: FusedLocationProviderClient, locationRequest: LocationRequest) =
+    Flowable.create<Location>({ emitter ->
 
-    var locationCheck = false
+        var locationCheck = false
 
-    val callback = object : LocationCallback() {
+        val callback = object : LocationCallback() {
 
-        override fun onLocationResult(result: LocationResult) {
+            override fun onLocationResult(result: LocationResult) {
 
-            // Emit the received location
-            emitter.onNext(result.locations.first())
-        }
+                // Emit the received location
+                emitter.onNext(result.locations.first())
+            }
 
         override fun onLocationAvailability(availability: LocationAvailability) {
 

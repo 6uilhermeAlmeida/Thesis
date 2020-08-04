@@ -43,7 +43,7 @@ class RxJavaViewModel(application: Application, mock: Boolean) : KitViewModel(ap
 
     override fun fetchTrendingMovies() {
         startTrendingMoviesTimer()
-        disposableBag += repository.fetchTrendingMovies()
+        repository.fetchTrendingMovies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { isLoading.value = true }
@@ -57,7 +57,7 @@ class RxJavaViewModel(application: Application, mock: Boolean) : KitViewModel(ap
                     message.value = context.getString(R.string.generic_movie_error)
                     Log.e(LOG_TAG, "Could not fetch movies", throwable)
                 }
-            )
+            ).also { disposableBag.add(it) }
     }
 
     override fun startUpdatesForLocalMovies() {
@@ -78,15 +78,11 @@ class RxJavaViewModel(application: Application, mock: Boolean) : KitViewModel(ap
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { isLoading.value = true }
             .subscribe({}, { handleLocalMoviesError(it) })
-            .also { disposableBag += it }
+            .also { disposableBag.add(it) }
     }
 
     override fun cancelUpdateForLocalMovies() {
         locationDisposable?.dispose()
-    }
-
-    private operator fun CompositeDisposable.plusAssign(disposable: Disposable) {
-        this.add(disposable)
     }
 
     override fun onCleared() {
