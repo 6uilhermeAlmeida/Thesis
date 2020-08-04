@@ -1,5 +1,6 @@
 package com.example.coroutineskit.location
 
+import android.annotation.SuppressLint
 import android.location.Location
 import android.os.Looper
 import com.example.kitprotocol.throwable.LocationProviderNotAvailableException
@@ -12,6 +13,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.conflate
 
+@SuppressLint("MissingPermission")
 internal fun getLocationUpdates(locationClient: FusedLocationProviderClient, locationRequest: LocationRequest) =
     callbackFlow<Location> {
 

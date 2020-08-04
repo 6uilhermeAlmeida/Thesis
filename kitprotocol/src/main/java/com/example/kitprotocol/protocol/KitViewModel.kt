@@ -55,7 +55,6 @@ abstract class KitViewModel(application: Application, mock: Boolean) : AndroidVi
     protected abstract fun startUpdatesForLocalMovies()
     protected abstract fun cancelUpdateForLocalMovies()
 
-
     fun resetMessage() {
         message.value = null
     }
