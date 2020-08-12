@@ -12,7 +12,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface IMovieWebServiceRxJava {
+interface IMovieServiceRxJava {
 
     @GET("trending/movie/week")
     fun getTrendingMovies(@Query("api_key") apiKey: String = TMDBConstants.TMDB_API_KEY): Single<MovieResponse>
@@ -38,15 +38,15 @@ object MovieWebServiceRxJava {
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
 
-    val service: IMovieWebServiceRxJava by lazy {
+    val service: IMovieServiceRxJava by lazy {
         builder
             .client(MovieHttpClient.get())
             .build()
-            .create(IMovieWebServiceRxJava::class.java)
+            .create(IMovieServiceRxJava::class.java)
     }
 
-    fun mock(): IMovieWebServiceRxJava = builder
+    fun mock(): IMovieServiceRxJava = builder
         .client(MovieHttpClient.mock())
         .build()
-        .create(IMovieWebServiceRxJava::class.java)
+        .create(IMovieServiceRxJava::class.java)
 }
