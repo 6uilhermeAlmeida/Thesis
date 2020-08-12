@@ -5,13 +5,13 @@ import com.example.kitprotocol.db.entity.MovieEntity
 import com.example.kitprotocol.rest.model.MovieDetails
 import com.example.kitprotocol.rest.model.idList
 import com.example.kitprotocol.transformer.toEntityList
-import com.example.rxjavakit.rest.IMovieWebServiceRxJava
+import com.example.rxjavakit.rest.IMovieServiceRxJava
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
-class RxJavaRepository(private val remoteSource: IMovieWebServiceRxJava, private val localSource: MovieDao) {
+class RxJavaRepository(private val remoteSource: IMovieServiceRxJava, private val localSource: MovieDao) {
 
     val movies: Flowable<List<MovieEntity>>
         get() = localSource.allByFlowable()
