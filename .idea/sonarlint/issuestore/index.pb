@@ -1,6 +1,6 @@
 
 ˆ
-Xcoroutineskit/src/main/java/com/example/coroutineskit/repository/CoroutinesRepository.kt,7\1\71c458aede85f7e7f724b63a4cfd21ca6b158128
+Xcoroutineskit/src/main/java/com/example/coroutineskit/repository/CoroutinesRepository.kt,7/1/71c458aede85f7e7f724b63a4cfd21ca6b158128
 †
 Vcoroutineskit/src/main/java/com/example/coroutineskit/viewmodel/CoroutinesViewModel.kt,f/d/fdcd07b9a46ee6253a7f60a1de70ada233add2b9
 d
@@ -24,7 +24,7 @@ Jrxjavakit/src/main/java/com/example/rxjavakit/viewmodel/RxJavaViewModel.kt,6/9
 |
 Lcoroutineskit/src/main/java/com/example/coroutineskit/rest/TMDBWebService.kt,7/b/7bd1df2ee6c0364c51b059fccf7921d9055a7f67
 l
-<app/src/main/java/com/example/thesis/adapter/MovieAdapter.kt,4\9\49e91d5a504c64b3788b4f6cd1501d9d9e2ddc40
+<app/src/main/java/com/example/thesis/adapter/MovieAdapter.kt,4/9/49e91d5a504c64b3788b4f6cd1501d9d9e2ddc40
 o
 ?app/src/main/java/com/example/thesis/extensions/ImageViewExt.kt,4/b/4b6802bd5d92f4f8b841b115ea8bb5a74cccad87
 k
@@ -56,7 +56,7 @@ R
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 J
-coroutineskit/build.gradle,5\8\583629c701f794d8489a04718b556075ac1a1db8
+coroutineskit/build.gradle,5/8/583629c701f794d8489a04718b556075ac1a1db8
 F
 rxjavakit/build.gradle,0\d\0d5edd868f7794f2a19528af3b080080da0c0216
 H
@@ -68,13 +68,13 @@ Drxjavakit/src/main/java/com/example/rxjavakit/rest/TMDBWebService.kt,a/5/a519f
 z
 Jkitprotocol/src/main/java/com/example/kitprotocol/db/entity/MovieEntity.kt,5/8/5858f759aa6cb78e54e2c51553a9d87d840167b4
 ‡
-Wkitprotocol/src/main/java/com/example/kitprotocol/transformer/MovieDetailTransformer.kt,5\a\5a833c076f2cdfd7be8a558678841d520c6b4771
+Wkitprotocol/src/main/java/com/example/kitprotocol/transformer/MovieDetailTransformer.kt,5/a/5a833c076f2cdfd7be8a558678841d520c6b4771
 |
 Lkitprotocol/src/main/java/com/example/kitprotocol/rest/model/MovieDetails.kt,7/7/77b807bcba243636ab42e5319f512184fad695c6
 }
 Mrxjavakit/src/main/java/com/example/rxjavakit/extension/FlowableExtensions.kt,8\0\80b826e46b4a37b708e0cdb9f3bb89ba9aecf40c
 z
-Japp/src/main/java/com/example/thesis/adapter/diffutil/MovieItemDiffUtil.kt,b\2\b29cadfa8ac28644ffddf503fbcf4e8190365324
+Japp/src/main/java/com/example/thesis/adapter/diffutil/MovieItemDiffUtil.kt,b/2/b29cadfa8ac28644ffddf503fbcf4e8190365324
 
 Oapp/src/main/java/com/example/thesis/adapter/viewholder/FooterItemViewHolder.kt,d\9\d9c71abd177f42692bc12d377ea145ffea4ba7ec
 ~
@@ -196,3 +196,7 @@ C
 benchmark/sh.sh,f/e/febaf24865137c57615f5336fe8cfa569be4d878
 u
 Ekitprotocol/src/main/java/com/example/kitprotocol/db/MovieDatabase.kt,f/4/f4da0470670d9a2373ed6b3ee8eafec37f74e580
+{
+Kkitprotocol/src/main/java/com/example/kitprotocol/protocol/MovieProtocol.kt,d/8/d8743152c65fff7b68406398e0ba2d825595e3d0
+O
+benchmark/results/benchmark.csv,8/c/8ccb81b6882a628873970952d48589d1a01eb3ce
