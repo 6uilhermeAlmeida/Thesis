@@ -8,6 +8,7 @@ import com.example.kitprotocol.transformer.toEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
@@ -104,7 +105,10 @@ class CoroutinesIntegrationBenchmark : CoroutinesBenchmark(), IIntegrationBenchm
     @Test
     override fun integration_reactive() = benchmarkRule.measureRepeated {
 
-        val flow = callbackFlow { offer(runBlocking { remoteSource.getTrendingMovies() }) }
+        val flow = callbackFlow {
+            offer(runBlocking { remoteSource.getTrendingMovies() })
+            awaitClose { }
+        }
             .onEach { remoteSource.getMoviesNowPlayingForRegion("PT") }
             .flowOn(Dispatchers.IO)
 
