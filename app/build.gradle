@@ -57,8 +57,7 @@ sonarqube {
         property "sonar.login", "d1b34d3189ac14ea94676df7b9ea851909375ea1"
         property "sonar.scm.disabled", true
         property "sonar.projectBaseDir", "$projectDir/.."
-        property "sonar.sources", "app/src/main/java," +
-                "coroutineskit/src/main/java," +
+        property "sonar.sources", "coroutineskit/src/main/java," +
                 "rxjavakit/src/main/java,"
         property "sonar.coverage.exclusions", "**/*"
     }
