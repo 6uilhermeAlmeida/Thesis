@@ -12,6 +12,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
@@ -109,7 +110,7 @@ class CoroutinesIntegrationBenchmark : CoroutinesBenchmark(), IIntegrationBenchm
             offer(runBlocking { remoteSource.getTrendingMovies() })
             awaitClose { }
         }
-            .onEach { remoteSource.getMoviesNowPlayingForRegion("PT") }
+            .map { remoteSource.getMoviesNowPlayingForRegion("PT") }
             .flowOn(Dispatchers.IO)
 
         runBlocking { flow.first() }
