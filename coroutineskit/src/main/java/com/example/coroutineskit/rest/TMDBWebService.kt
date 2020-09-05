@@ -38,7 +38,7 @@ object MovieWebServiceCoroutines {
 
     val service: IMovieServiceCoroutines by lazy {
         builder
-            .client(MovieHttpClient.get())
+            .client(MovieHttpClient.instance)
             .build()
             .create(IMovieServiceCoroutines::class.java)
     }
