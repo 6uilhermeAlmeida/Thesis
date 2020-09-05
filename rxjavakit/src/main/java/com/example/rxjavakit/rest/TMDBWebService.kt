@@ -40,7 +40,7 @@ object MovieWebServiceRxJava {
 
     val service: IMovieServiceRxJava by lazy {
         builder
-            .client(MovieHttpClient.get())
+            .client(MovieHttpClient.instance)
             .build()
             .create(IMovieServiceRxJava::class.java)
     }
