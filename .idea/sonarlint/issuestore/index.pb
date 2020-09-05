@@ -4,7 +4,7 @@ Xcoroutineskit/src/main/java/com/example/coroutineskit/repository/CoroutinesRepo
 †
 Vcoroutineskit/src/main/java/com/example/coroutineskit/viewmodel/CoroutinesViewModel.kt,f\d\fdcd07b9a46ee6253a7f60a1de70ada233add2b9
 d
-4app/src/main/java/com/example/thesis/MainActivity.kt,6/2/62bb2cb709b26d41f83f72388f1ff542612496fa
+4app/src/main/java/com/example/thesis/MainActivity.kt,6\2\62bb2cb709b26d41f83f72388f1ff542612496fa
 |
 Lrxjavakit/src/main/java/com/example/rxjavakit/repository/RxJavaRepository.kt,0\6\06604f7eaf395d5c5ca714ff7bacce1b5630e7d1
 A
@@ -56,7 +56,7 @@ R
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 J
-coroutineskit/build.gradle,5/8/583629c701f794d8489a04718b556075ac1a1db8
+coroutineskit/build.gradle,5\8\583629c701f794d8489a04718b556075ac1a1db8
 F
 rxjavakit/build.gradle,0\d\0d5edd868f7794f2a19528af3b080080da0c0216
 H
@@ -68,7 +68,7 @@ Drxjavakit/src/main/java/com/example/rxjavakit/rest/TMDBWebService.kt,a\5\a519f
 z
 Jkitprotocol/src/main/java/com/example/kitprotocol/db/entity/MovieEntity.kt,5/8/5858f759aa6cb78e54e2c51553a9d87d840167b4
 ‡
-Wkitprotocol/src/main/java/com/example/kitprotocol/transformer/MovieDetailTransformer.kt,5/a/5a833c076f2cdfd7be8a558678841d520c6b4771
+Wkitprotocol/src/main/java/com/example/kitprotocol/transformer/MovieDetailTransformer.kt,5\a\5a833c076f2cdfd7be8a558678841d520c6b4771
 |
 Lkitprotocol/src/main/java/com/example/kitprotocol/rest/model/MovieDetails.kt,7/7/77b807bcba243636ab42e5319f512184fad695c6
 }
@@ -194,3 +194,5 @@ u
 Ekitprotocol/src/main/java/com/example/kitprotocol/db/MovieDatabase.kt,f/4/f4da0470670d9a2373ed6b3ee8eafec37f74e580
 {
 Kkitprotocol/src/main/java/com/example/kitprotocol/protocol/MovieProtocol.kt,d/8/d8743152c65fff7b68406398e0ba2d825595e3d0
+L
+.idea/codeStyles/Project.xml,6\e\6ecd6000a7b6f4a2884412ff19f74193ed089648
