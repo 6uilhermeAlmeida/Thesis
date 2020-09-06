@@ -12,7 +12,6 @@ object MovieHttpClient {
 
     val instance: OkHttpClient by lazy { builder.build() }
 
-    fun mock(maxSimultaneousRequests: Int = 20): OkHttpClient = builder.addInterceptor(MockInterceptor())
-        .dispatcher(Dispatcher().apply { maxRequestsPerHost = maxSimultaneousRequests })
+    fun mock(): OkHttpClient = builder.addInterceptor(MockInterceptor())
         .build()
 }
