@@ -20,7 +20,7 @@ object MainConfig {
      * If true, the app will use mocked values for network calls.
      */
 
-    private const val useMockedNetwork: Boolean = true
+    private const val useMockedNetwork: Boolean = false
 
     /**
      * Provides the correct ViewModel according to [library] and [useMockedNetwork].
